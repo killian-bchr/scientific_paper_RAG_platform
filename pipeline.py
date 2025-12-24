@@ -1,12 +1,7 @@
 from sqlalchemy.orm import Session
 
 from crud import CRUD
-from paper_engine import (
-    PaperBuilder,
-    PaperExtractor,
-    PaperFetcher,
-    PaperProcessor,
-)
+from paper_engine import PaperBuilder, PaperExtractor, PaperFetcher, PaperProcessor
 
 
 class Pipeline:

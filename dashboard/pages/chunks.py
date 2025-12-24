@@ -1,7 +1,5 @@
 import streamlit as st
-
 from load_data import LoadData
-
 
 st.title("📦 Chunks")
 
@@ -26,7 +24,6 @@ st.metric("📦 Number of chunks", len(chunks))
 
 for i, chunk in enumerate(chunks):
     with st.expander(
-        f"{i+1}. {chunk.chunk_type} | page {chunk.page_no}",
-        expanded=False
+        f"{i + 1}. {chunk.chunk_type} | page {chunk.page_no}", expanded=False
     ):
         st.write(chunk.content)

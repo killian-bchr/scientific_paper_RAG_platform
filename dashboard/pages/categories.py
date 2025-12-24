@@ -1,7 +1,5 @@
 import streamlit as st
-
 from load_data import LoadData
-
 
 st.title("🧩 Categories")
 

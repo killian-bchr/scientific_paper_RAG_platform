@@ -1,9 +1,10 @@
 from typing import Any, List
+
 from sqlalchemy.orm import Session
 
+from database.tables import AuthorORM, CategoryORM, ChunkORM, DomainORM, PaperORM
 from helpers.utils import Utils
 from models import Author, Category, Chunk, Domain, Paper
-from database.tables import AuthorORM, CategoryORM, ChunkORM, DomainORM, PaperORM
 
 
 class CRUD:
@@ -21,14 +22,14 @@ class CRUD:
         CRUD.flush_session(session)
 
     @staticmethod
-    def author_to_orm(session: Session, author: Author, flush: bool = False) -> AuthorORM:
+    def author_to_orm(
+        session: Session, author: Author, flush: bool = False
+    ) -> AuthorORM:
         existing_author = Utils.get_existing_author(session, author.name)
         if existing_author:
             return existing_author
 
-        author_orm = AuthorORM(
-            name = author.name
-        )
+        author_orm = AuthorORM(name=author.name)
 
         CRUD.add_object_to_session(session, author_orm)
 
@@ -38,7 +39,9 @@ class CRUD:
         return author_orm
 
     @staticmethod
-    def authors_to_orm(session: Session, authors: List[Author], flush: bool = False) -> List[AuthorORM]:
+    def authors_to_orm(
+        session: Session, authors: List[Author], flush: bool = False
+    ) -> List[AuthorORM]:
         authors_orm = [CRUD.author_to_orm(session, a) for a in authors]
 
         if flush:
@@ -47,14 +50,14 @@ class CRUD:
         return authors_orm
 
     @staticmethod
-    def domain_to_orm(session: Session, domain: Domain, flush: bool = False) -> DomainORM:
+    def domain_to_orm(
+        session: Session, domain: Domain, flush: bool = False
+    ) -> DomainORM:
         existing_domain = Utils.get_existing_domain(session, domain.name)
         if existing_domain:
             return existing_domain
 
-        domain_orm = DomainORM(
-            name = domain.name
-        )
+        domain_orm = DomainORM(name=domain.name)
 
         CRUD.add_object_to_session(session, domain_orm)
 
@@ -64,7 +67,9 @@ class CRUD:
         return domain_orm
 
     @staticmethod
-    def domains_to_orm(session: Session, domains: List[Domain], flush: bool = False) -> List[DomainORM]:
+    def domains_to_orm(
+        session: Session, domains: List[Domain], flush: bool = False
+    ) -> List[DomainORM]:
         domains_orm = [CRUD.domain_to_orm(session, d) for d in domains]
 
         if flush:
@@ -78,18 +83,19 @@ class CRUD:
         category: Category,
         flush: bool = False,
     ) -> CategoryORM:
-        existing_category = Utils.get_existing_category(session, category.name, category.domain.name)
+        existing_category = Utils.get_existing_category(
+            session, category.name, category.domain.name
+        )
         if existing_category:
             return existing_category
 
         domain_orm = Utils.get_existing_domain(session, category.domain.name)
         if domain_orm is None:
-            raise ValueError("The corresponding domain to this category should already exists !")
+            raise ValueError(
+                "The corresponding domain to this category should already exists !"
+            )
 
-        category_orm = CategoryORM(
-            name = category.name,
-            domain_id = domain_orm.id
-        )
+        category_orm = CategoryORM(name=category.name, domain_id=domain_orm.id)
 
         CRUD.add_object_to_session(session, category_orm)
 
@@ -118,13 +124,13 @@ class CRUD:
         existing_paper = Utils.get_existing_paper(session, paper.arxiv_id)
         if existing_paper:
             return existing_paper
-        
+
         paper_orm = PaperORM(
-            arxiv_id = paper.arxiv_id,
-            title = paper.title,
-            pdf_url = paper.pdf_url,
-            abstract = paper.abstract,
-            publication_date = paper.publication_date,
+            arxiv_id=paper.arxiv_id,
+            title=paper.title,
+            pdf_url=paper.pdf_url,
+            abstract=paper.abstract,
+            publication_date=paper.publication_date,
         )
 
         CRUD.add_object_to_session(session, paper_orm)
@@ -147,10 +153,10 @@ class CRUD:
         flush: bool = False,
     ) -> ChunkORM:
         chunk_orm = ChunkORM(
-            chunk_type = chunk.chunk_type,
-            page_no = chunk.page_no,
-            content = chunk.content,
-            embedding = chunk.embedding,
+            chunk_type=chunk.chunk_type,
+            page_no=chunk.page_no,
+            content=chunk.content,
+            embedding=chunk.embedding,
         )
         chunk_orm.paper = paper_orm
         CRUD.add_object_to_session(session, chunk_orm)

@@ -1,11 +1,12 @@
-from typing import Dict
 from pathlib import Path
-from huggingface_hub import hf_hub_download
-from docling.document_converter import DocumentConverter
+from typing import Dict
+
 from docling.datamodel.document import ConversionResult
+from docling.document_converter import DocumentConverter
+from huggingface_hub import hf_hub_download
 
 from config import Config
-from exceptions import InvalidPDFFormatError, PDFNotFoundError, PDFConversionError
+from exceptions import InvalidPDFFormatError, PDFConversionError, PDFNotFoundError
 
 
 class PaperExtractor:
@@ -16,37 +17,33 @@ class PaperExtractor:
             repo_id="docling-project/docling-layout-heron",
             filename="config.json",
             local_dir="./models/docling-layout-heron",
-            local_dir_use_symlinks=False
+            local_dir_use_symlinks=False,
         )
 
     def _is_valid_pdf(self, filepath: Path) -> bool:
         try:
-            if filepath.suffix.lower() != '.pdf':
+            if filepath.suffix.lower() != ".pdf":
                 return False
-            
+
             if filepath.stat().st_size == 0:
                 return False
-            
+
             return True
 
-        except (OSError, IOError):
+        except OSError:
             return False
 
     def convert_paper(self, paper_name: str) -> ConversionResult:
-        if not paper_name.endswith('.pdf'):
-            paper_name = paper_name + '.pdf'
+        if not paper_name.endswith(".pdf"):
+            paper_name = paper_name + ".pdf"
 
         filepath = Path(Config.PDF_FOLDER_PATH) / paper_name
 
         if not filepath.exists():
-            raise PDFNotFoundError(
-                f"PDF Article not found : {filepath}"
-            )
+            raise PDFNotFoundError(f"PDF Article not found : {filepath}")
 
         if not self._is_valid_pdf(filepath):
-            raise InvalidPDFFormatError(
-                f"Fichier invalide ou corrompu : {filepath}"
-            )
+            raise InvalidPDFFormatError(f"Fichier invalide ou corrompu : {filepath}")
 
         try:
             result = self.converter.convert(filepath)
@@ -75,11 +72,11 @@ class PaperExtractor:
     def extract_body(self, doc: ConversionResult) -> Dict:
         dump = doc.model_dump()
 
-        assembled = dump.get('assembled')
+        assembled = dump.get("assembled")
         if not assembled:
             raise ValueError("'assembled' not doc")
 
-        body = assembled.get('body')
+        body = assembled.get("body")
         if not body:
             raise ValueError("'body' not in doc")
 
