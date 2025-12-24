@@ -10,4 +10,7 @@ exclude =
     build,
     papers/,
     *.db,
-    *.md,
+    README.md,
+    requirements.txt,
+    .gitignore,
+    .isort.cfg,

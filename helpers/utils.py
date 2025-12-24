@@ -1,15 +1,10 @@
-from datetime import datetime, date
+from datetime import date, datetime
 from typing import List, Optional, Union
+
 from sqlalchemy.orm import Query, Session, joinedload
 
+from database.tables import AuthorORM, CategoryORM, ChunkORM, DomainORM, PaperORM
 from exceptions import InvalidDate
-from database.tables import (
-    AuthorORM,
-    CategoryORM,
-    ChunkORM,
-    DomainORM,
-    PaperORM,
-)
 
 
 class Utils:
@@ -72,13 +67,10 @@ class Utils:
 
     @staticmethod
     def papers_base_query(session: Session) -> Query[PaperORM]:
-        return (
-            session.query(PaperORM)
-            .options(
-                joinedload(PaperORM.domains),
-                joinedload(PaperORM.categories),
-                joinedload(PaperORM.authors),
-            )
+        return session.query(PaperORM).options(
+            joinedload(PaperORM.domains),
+            joinedload(PaperORM.categories),
+            joinedload(PaperORM.authors),
         )
 
     @staticmethod
@@ -128,12 +120,18 @@ class Utils:
         return session.query(DomainORM).filter_by(name=domain).first()
 
     @staticmethod
-    def get_existing_category(session: Session, category: str, domain: str) -> Optional[CategoryORM]:
+    def get_existing_category(
+        session: Session, category: str, domain: str
+    ) -> Optional[CategoryORM]:
         domain_orm = Utils.get_existing_domain(session, domain)
         if domain_orm is None:
             return None
 
-        return session.query(CategoryORM).filter_by(name=category, domain_id=domain_orm.id).first()
+        return (
+            session.query(CategoryORM)
+            .filter_by(name=category, domain_id=domain_orm.id)
+            .first()
+        )
 
     @staticmethod
     def get_existing_paper(session: Session, paper_id: str) -> Optional[PaperORM]:

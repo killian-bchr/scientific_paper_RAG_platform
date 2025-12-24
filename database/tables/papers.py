@@ -2,7 +2,11 @@ from sqlalchemy import Column, Date, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from database.base import Base
-from database.tables.association_tables import paper_author, paper_domain, paper_category
+from database.tables.association_tables import (
+    paper_author,
+    paper_category,
+    paper_domain,
+)
 
 
 class PaperORM(Base):
@@ -26,7 +30,7 @@ class PaperORM(Base):
         secondary=paper_domain,
         back_populates="papers",
     )
-    
+
     categories = relationship(
         "CategoryORM",
         secondary=paper_category,
@@ -34,7 +38,5 @@ class PaperORM(Base):
     )
 
     chunks = relationship(
-        "ChunkORM",
-        back_populates="paper",
-        cascade="all, delete-orphan"
+        "ChunkORM", back_populates="paper", cascade="all, delete-orphan"
     )

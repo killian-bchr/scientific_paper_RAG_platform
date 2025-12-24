@@ -1,10 +1,11 @@
-import streamlit as st
 from datetime import date
 from typing import List, Optional
 
-from helpers.utils import Utils
+import streamlit as st
+
 from database.session import get_session
 from database.tables import AuthorORM, CategoryORM, ChunkORM, DomainORM, PaperORM
+from helpers.utils import Utils
 
 
 class LoadData:
@@ -29,8 +30,7 @@ class LoadData:
     @staticmethod
     @st.cache_data
     def load_papers(
-        start_date: Optional[date],
-        end_date: Optional[date]
+        start_date: Optional[date], end_date: Optional[date]
     ) -> List[PaperORM]:
         with get_session() as session:
             return Utils.fetch_paper_by_period(session, start_date, end_date)

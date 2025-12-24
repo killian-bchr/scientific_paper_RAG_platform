@@ -1,4 +1,5 @@
 import os
+
 from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 
@@ -8,7 +9,6 @@ load_dotenv("config.env")
 
 
 class Config:
-
     @staticmethod
     def get_env_variable(name: str) -> str:
         """
@@ -25,9 +25,13 @@ class Config:
         """
         value = os.getenv(name)
         if value is None:
-            raise MissingEnvironmentVariableError(f"Missing environment variable: {name}")
+            raise MissingEnvironmentVariableError(
+                f"Missing environment variable: {name}"
+            )
         return value
 
     PDF_FOLDER_PATH = get_env_variable("PDF_FOLDER_PATH")
     EMBEDDING_MODEL = SentenceTransformer("all-MiniLM-L6-v2")
-    DATABASE_URL = "sqlite:///D:/Centrale/Projet Immersion/projet_immersion/database/papers.db"
+    DATABASE_URL = (
+        "sqlite:///D:/Centrale/Projet Immersion/projet_immersion/database/papers.db"
+    )

@@ -1,8 +1,9 @@
 import logging
-from numpy import ndarray
 from datetime import date
-from arxiv import Result
 from typing import Dict, List, Optional, Tuple
+
+from arxiv import Result
+from numpy import ndarray
 
 from config import Config
 from exceptions import DownloadingPDFError
@@ -20,7 +21,7 @@ class PaperProcessor:
     @staticmethod
     def extract_pdf_url(paper: Result) -> str:
         return paper.pdf_url
-    
+
     @staticmethod
     def extract_abstract(paper: Result) -> str:
         return paper.summary
@@ -30,7 +31,9 @@ class PaperProcessor:
         return paper.published.date()
 
     @staticmethod
-    def parse_arxiv_categories(category_codes: List[str]) -> List[Tuple[Domains, Category]]:
+    def parse_arxiv_categories(
+        category_codes: List[str],
+    ) -> List[Tuple[Domains, Category]]:
         categorized = []
         unknown_categories = set()
 
@@ -74,22 +77,22 @@ class PaperProcessor:
 
     @staticmethod
     def extract_arxiv_id(paper: Result) -> str:
-        return paper.get_short_id().split('v')[0]
+        return paper.get_short_id().split("v")[0]
 
     @staticmethod
     def download_paper(paper: Result, filename: Optional[str] = None) -> None:
         if filename is None:
-            paper_id = paper.get_short_id().split('v')[0]
+            paper_id = paper.get_short_id().split("v")[0]
             filename = f"{paper_id.replace('/', '_')}.pdf"
-        elif not filename.endswith('.pdf'):
-            filename += '.pdf'
+        elif not filename.endswith(".pdf"):
+            filename += ".pdf"
 
         try:
             paper.download_pdf(dirpath=Config.PDF_FOLDER_PATH, filename=filename)
             logger.info("PDF successfully downloaded !")
 
-        except Exception as e:
-            raise DownloadingPDFError(f"Error during the downloading of the PDF !")
+        except Exception:
+            raise DownloadingPDFError("Error during the downloading of the PDF !")
 
     @staticmethod
     def create_chunks(doc_body: Dict) -> List[Dict]:
@@ -112,11 +115,13 @@ class PaperProcessor:
         return chunks
 
     @staticmethod
-    def split_chunks(chunks: List[Dict], max_chars: int = 300, overlap: int = 50) -> List[Dict]:
+    def split_chunks(
+        chunks: List[Dict], max_chars: int = 300, overlap: int = 50
+    ) -> List[Dict]:
         new_chunks = []
 
         for chunk in chunks:
-            text = chunk.get('content')
+            text = chunk.get("content")
             if not text:
                 continue
 
@@ -129,10 +134,12 @@ class PaperProcessor:
                 end = start + max_chars
                 sub_text = text[start:end]
 
-                new_chunks.append({
-                    **chunk,
-                    'content': sub_text,
-                })
+                new_chunks.append(
+                    {
+                        **chunk,
+                        "content": sub_text,
+                    }
+                )
 
                 start = end - overlap
 
@@ -140,7 +147,7 @@ class PaperProcessor:
 
     @staticmethod
     def extract_chunk_texts(chunks: List[Dict]) -> List[str]:
-        return [chunk['content'] for chunk in chunks]
+        return [chunk["content"] for chunk in chunks]
 
     @staticmethod
     def embed_texts(raw_text: List[str]) -> ndarray:
@@ -158,16 +165,11 @@ class PaperProcessor:
         embeddings: ndarray,
     ) -> List[Dict]:
         if len(chunks) != len(embeddings):
-            raise ValueError(
-                f"Chunks ({len(chunks)}) and embeddings ({len(embeddings)}) must have the same length"
-            )
+            raise ValueError("Chunks and embeddings must have the same length")
 
         new_chunks = []
         for chunk, embedding in zip(chunks, embeddings):
-            new_chunks.append({
-                **chunk,
-                "embedding": embedding
-            })
+            new_chunks.append({**chunk, "embedding": embedding})
 
         return new_chunks
 
@@ -184,7 +186,7 @@ class PaperProcessor:
         chunk_type = chunk.get("chunk_type")
         if not chunk_type:
             raise ValueError("Chunk should have a 'chunk_type' !")
-        
+
         return chunk_type
 
     @staticmethod
@@ -208,5 +210,5 @@ class PaperProcessor:
         embedding = chunk.get("embedding")
         if embedding is None:
             raise ValueError("Chunk should have an embedding related to its content !")
-        
+
         return embedding

@@ -1,8 +1,13 @@
-import arxiv
-from arxiv import Search, SortCriterion, Result
 from typing import Dict, List, Optional
 
-from exceptions import InvalidSearchParametersError, MissingSearchParameterError, PaperNotFound
+import arxiv
+from arxiv import Result, Search, SortCriterion
+
+from exceptions import (
+    InvalidSearchParametersError,
+    MissingSearchParameterError,
+    PaperNotFound,
+)
 
 
 class PaperFetcher:
@@ -16,12 +21,12 @@ class PaperFetcher:
         **additional_params,
     ) -> Dict:
         params = {
-            'max_results': max_results,
+            "max_results": max_results,
             **additional_params,
         }
 
         if sort_by:
-            params['sort_by'] = sort_by
+            params["sort_by"] = sort_by
 
         return params
 
@@ -31,14 +36,18 @@ class PaperFetcher:
         sort_by: Optional[SortCriterion] = None,
         **additional_params,
     ) -> Search:
-        id_list = additional_params.get('id_list', None)
-        query = additional_params.get('query', None)
+        id_list = additional_params.get("id_list", None)
+        query = additional_params.get("query", None)
 
         if id_list and query:
-            raise InvalidSearchParametersError("You should not use 'id_list' and 'query' together !")
+            raise InvalidSearchParametersError(
+                "You should not use 'id_list' and 'query' together !"
+            )
 
         if not id_list and not query:
-            raise MissingSearchParameterError("You have to input at least 'id_list' or 'query' !")
+            raise MissingSearchParameterError(
+                "You have to input at least 'id_list' or 'query' !"
+            )
 
         params = self.build_params(max_results, sort_by, **additional_params)
         return Search(**params)
@@ -49,7 +58,7 @@ class PaperFetcher:
         max_results: int = 3,
         sort_by: SortCriterion = SortCriterion.SubmittedDate,
     ) -> Search:
-        params = {'query': f"{category}"}
+        params = {"query": f"{category}"}
         return self.create_search(
             max_results=max_results,
             sort_by=sort_by,
@@ -61,7 +70,7 @@ class PaperFetcher:
         id_list: List[str],
         sort_by: SortCriterion = SortCriterion.SubmittedDate,
     ) -> Search:
-        params = {'id_list': id_list}
+        params = {"id_list": id_list}
         max_results = len(id_list)
 
         return self.create_search(
@@ -74,16 +83,9 @@ class PaperFetcher:
         return list(self.client.results(search))
 
     def fetch_papers_by_query(
-        self,
-        query: str,
-        max_results: int = 3,
-        **kwargs
+        self, query: str, max_results: int = 3, **kwargs
     ) -> List[Result]:
-        search = self.create_search(
-            query=query,
-            max_results=max_results,
-            **kwargs
-        )
+        search = self.create_search(query=query, max_results=max_results, **kwargs)
         return self.execute_search(search)
 
     def fetch_papers_by_ids(

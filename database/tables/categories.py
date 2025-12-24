@@ -1,13 +1,13 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
-from database.base import Base
 
+from database.base import Base
 from database.tables.association_tables import paper_category
 
 
 class CategoryORM(Base):
     __tablename__ = "categories"
-    
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False, index=True)
     domain_id = Column(Integer, ForeignKey("domains.id"), nullable=False)

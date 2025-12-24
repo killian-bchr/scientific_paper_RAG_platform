@@ -1,4 +1,7 @@
 from contextlib import contextmanager
+
+from sqlalchemy.exc import SQLAlchemyError
+
 from database.base import SessionLocal
 
 
@@ -8,7 +11,7 @@ def get_session():
     try:
         yield session
 
-    except:
+    except SQLAlchemyError:
         session.rollback()
         raise
 

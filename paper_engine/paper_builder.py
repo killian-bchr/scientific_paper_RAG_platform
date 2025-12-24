@@ -1,5 +1,6 @@
-from arxiv import Result
 from typing import Dict, List
+
+from arxiv import Result
 
 from models import Author, Category, Chunk, Domain, Paper
 from paper_engine.paper_processor import PaperProcessor
@@ -8,9 +9,7 @@ from paper_engine.paper_processor import PaperProcessor
 class PaperBuilder:
     @staticmethod
     def build_author(author: Result.Author) -> Author:
-        return Author(
-            name = author.name
-        )
+        return Author(name=author.name)
 
     @staticmethod
     def build_authors(authors: List[Result.Author]) -> List[Author]:
@@ -18,9 +17,7 @@ class PaperBuilder:
 
     @staticmethod
     def build_domain(domain: str) -> Domain:
-        return Domain(
-            name = domain
-        )
+        return Domain(name=domain)
 
     @staticmethod
     def build_domains(domains: List[str]) -> List[Domain]:
@@ -28,10 +25,7 @@ class PaperBuilder:
 
     @staticmethod
     def build_category(category: str, domain: str) -> Category:
-        return Category(
-            name = category,
-            domain = PaperBuilder.build_domain(domain)
-        )
+        return Category(name=category, domain=PaperBuilder.build_domain(domain))
 
     @staticmethod
     def build_categories(categories: List[str], domains: List[str]) -> List[Category]:
@@ -44,14 +38,14 @@ class PaperBuilder:
         categories = PaperProcessor.extract_categories(paper)
 
         return Paper(
-            arxiv_id = PaperProcessor.extract_arxiv_id(paper),
-            title = PaperProcessor.extract_title(paper),
-            pdf_url = PaperProcessor.extract_pdf_url(paper),
-            abstract = PaperProcessor.extract_abstract(paper),
-            publication_date = PaperProcessor.extract_publication_date(paper),
-            authors = PaperBuilder.build_authors(authors),
-            domains = PaperBuilder.build_domains(domains),
-            categories = PaperBuilder.build_categories(categories, domains),
+            arxiv_id=PaperProcessor.extract_arxiv_id(paper),
+            title=PaperProcessor.extract_title(paper),
+            pdf_url=PaperProcessor.extract_pdf_url(paper),
+            abstract=PaperProcessor.extract_abstract(paper),
+            publication_date=PaperProcessor.extract_publication_date(paper),
+            authors=PaperBuilder.build_authors(authors),
+            domains=PaperBuilder.build_domains(domains),
+            categories=PaperBuilder.build_categories(categories, domains),
         )
 
     @staticmethod
@@ -61,10 +55,10 @@ class PaperBuilder:
     @staticmethod
     def build_chunk(chunk: Dict) -> Chunk:
         return Chunk(
-            chunk_type = PaperProcessor.extract_type_from_chunk(chunk),
-            page_no = PaperProcessor.extract_page_no_from_chunk(chunk),
-            content = PaperProcessor.extract_content_from_chunk(chunk),
-            embedding = PaperProcessor.extract_embedding_from_chunk(chunk),
+            chunk_type=PaperProcessor.extract_type_from_chunk(chunk),
+            page_no=PaperProcessor.extract_page_no_from_chunk(chunk),
+            content=PaperProcessor.extract_content_from_chunk(chunk),
+            embedding=PaperProcessor.extract_embedding_from_chunk(chunk),
         )
 
     @staticmethod

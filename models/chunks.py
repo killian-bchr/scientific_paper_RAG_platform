@@ -1,5 +1,6 @@
-from numpy import ndarray
 from dataclasses import dataclass
+
+from numpy import ndarray
 
 
 @dataclass(eq=True)
