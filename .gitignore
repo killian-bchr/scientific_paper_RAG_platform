@@ -1,0 +1,25 @@
+# Virtual environnements
+.venv/
+venv/
+
+# Configs / secrets
+.env
+config.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.cache
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Notebooks
+*.ipynb
+
+# Papers
+papers/
