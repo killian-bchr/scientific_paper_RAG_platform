@@ -48,17 +48,17 @@ jobs:
       - name: Run Flake8
         run: |
           echo "::group::🧹 Flake8 Code Analysis"
-          flake8 app/ --count --show-source --statistics
+          flake8 . --count --show-source --statistics
           echo "::endgroup::"
 
       - name: Check Black Formatting
         run: |
           echo "::group::🎨 Black Format Check"
-          black --check app/
+          black --check .
           echo "::endgroup::"
 
       - name: Check Import Sorting
         run: |
           echo "::group::📦 isort Import Check"
-          isort --check app/
+          isort --check .
           echo "::endgroup::"
