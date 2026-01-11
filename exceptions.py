@@ -56,3 +56,9 @@ class InvalidDate(Exception):
     """Raised when a date is invalid and impossible to parse."""
 
     pass
+
+
+class InvalidQuery(Exception):
+    """Raised when a query is empty."""
+
+    pass
