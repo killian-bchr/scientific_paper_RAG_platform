@@ -1,32 +1,27 @@
 import streamlit as st
 from components import Components
-from constants import DefaultValues, SessionStateConstants
 from load_data import LoadData
 from service import Service
+from session_state import init_session_state
+
+init_session_state()
 
 st.title("📄 Papers")
 
 domains = LoadData.load_domains()
 categories = LoadData.load_categories()
 
-if st.sidebar.button("🧹 Clear filters"):
-    st.session_state.clear()
-    st.rerun()
+Components.render_clear_filters_button(in_sidebar=True)
 
 st.sidebar.header("🔍 Filters")
 
-if SessionStateConstants.DOMAIN not in st.session_state:
-    st.session_state[SessionStateConstants.DOMAIN] = DefaultValues.ALL
-
-if SessionStateConstants.CATEGORY not in st.session_state:
-    st.session_state[SessionStateConstants.CATEGORY] = DefaultValues.ALL
-
-selected_domain = Components.select_domains(domains)
-selected_category = Components.select_categories(categories)
+selected_domain = Components.select_domains(domains, in_sidebar=True)
+selected_category = Components.select_categories(categories, in_sidebar=True)
 
 st.sidebar.header("📅 Publication period")
 
-start_year, end_year = Components.select_start_and_end_year()
+start_year = Components.select_start_year(in_sidebar=True)
+end_year = Components.select_end_year(in_sidebar=True)
 start_date, end_date = Service.compute_start_and_end_date(start_year, end_year)
 
 papers = LoadData.load_papers(start_date, end_date)
@@ -47,12 +42,7 @@ paper = Service.fetch_paper_selected(filtered_papers, selected_title)
 
 st.markdown("## 📌 Paper Details")
 
-st.markdown(f"### {paper.title}")
-
-st.markdown("**Publication Date:** " + str(paper.publication_date))
-st.markdown("**Authors:** " + ", ".join(a.name for a in paper.authors))
-st.markdown("**Domains:** " + ", ".join(d.name for d in paper.domains))
-st.markdown("**Categories:** " + ", ".join(c.name for c in paper.categories))
+Components.render_paper_details(paper)
 
 with st.container():
     col1, col2 = st.columns(2)

@@ -3,6 +3,9 @@ from components import Components
 from constants import SessionStateConstants
 from load_data import LoadData
 from service import Service
+from session_state import init_session_state
+
+init_session_state()
 
 st.title("📦 Chunks")
 

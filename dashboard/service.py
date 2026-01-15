@@ -5,6 +5,7 @@ from constants import DefaultValues
 from utils import Utils
 
 from database.tables import CategoryORM, ChunkORM, DomainORM, PaperORM
+from retriever import HybridRetriever
 
 
 class Service:
@@ -77,3 +78,13 @@ class Service:
     def fetch_paper_selected(papers: List[PaperORM], paper_title: str) -> PaperORM:
         paper_titles = Utils.create_papers_dict(papers)
         return paper_titles[paper_title]
+
+    @staticmethod
+    def retrieve_top_k_papers(
+        papers: List[PaperORM],
+        query: str,
+        k: int = 10,
+    ) -> List[int]:
+        retriever = HybridRetriever(papers)
+
+        return retriever.top_k_papers(query, k)

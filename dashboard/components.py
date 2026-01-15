@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 import streamlit as st
 from constants import DefaultValues, Pages, SessionStateConstants
@@ -51,23 +51,55 @@ class Components:
         return st.selectbox("Filter by type", [DefaultValues.ALL] + chunk_types)
 
     @staticmethod
-    def select_domains(domains: List[DomainORM]) -> str:
-        return st.sidebar.selectbox(
+    def select_domains(domains: List[DomainORM], in_sidebar: bool = False) -> str:
+        container = st.sidebar if in_sidebar else st
+
+        options = [DefaultValues.ALL] + [d.name for d in domains]
+
+        return container.selectbox(
             "Domain",
-            [DefaultValues.ALL] + [d.name for d in domains],
-            index=([DefaultValues.ALL] + [d.name for d in domains]).index(
-                st.session_state[SessionStateConstants.DOMAIN]
-            ),
+            options,
+            key=SessionStateConstants.DOMAIN,
         )
 
     @staticmethod
-    def select_categories(categories: List[CategoryORM]) -> str:
-        return st.sidebar.selectbox(
+    def select_categories(
+        categories: List[CategoryORM], in_sidebar: bool = False
+    ) -> str:
+        container = st.sidebar if in_sidebar else st
+
+        options = [DefaultValues.ALL] + [c.name for c in categories]
+
+        return container.selectbox(
             "Category",
-            [DefaultValues.ALL] + [c.name for c in categories],
-            index=([DefaultValues.ALL] + [c.name for c in categories]).index(
-                st.session_state[SessionStateConstants.CATEGORY]
-            ),
+            options,
+            key=SessionStateConstants.CATEGORY,
+        )
+
+    @staticmethod
+    def select_start_year(in_sidebar: bool = False) -> int:
+        container = st.sidebar if in_sidebar else st
+
+        years = Utils.get_years_range()
+        options = [DefaultValues.ALL] + years
+
+        return container.selectbox(
+            "Start year",
+            options,
+            key=SessionStateConstants.START_YEAR,
+        )
+
+    @staticmethod
+    def select_end_year(in_sidebar: bool = False) -> int:
+        container = st.sidebar if in_sidebar else st
+
+        years = Utils.get_years_range()
+        options = [DefaultValues.ALL] + years
+
+        return container.selectbox(
+            "End year",
+            options,
+            key=SessionStateConstants.END_YEAR,
         )
 
     @staticmethod
@@ -75,19 +107,6 @@ class Components:
         paper_titles = Utils.create_papers_dict(papers)
 
         return st.selectbox("Select a paper", list(paper_titles.keys()))
-
-    @staticmethod
-    def select_start_and_end_year() -> Tuple[int, int]:
-        years = Utils.get_years_range()
-
-        start_year = st.sidebar.selectbox(
-            "Start year", [DefaultValues.ALL] + years, index=0
-        )
-        end_year = st.sidebar.selectbox(
-            "End year", [DefaultValues.ALL] + years, index=len(years)
-        )
-
-        return start_year, end_year
 
     @staticmethod
     def render_chunk(chunk: ChunkORM, index: int) -> None:
@@ -110,6 +129,13 @@ class Components:
             Utils.switch_page(Pages.CHUNKS)
 
     @staticmethod
+    def render_paper_button(paper: PaperORM) -> None:
+        if st.button("🔍 View paper", key=f"view_{paper.id}"):
+            Utils.set_session_state(paper.id, SessionStateConstants.PAPER_ID)
+            Utils.set_session_state(False, SessionStateConstants.SEARCH_ACTIVE)
+            Utils.switch_page(Pages.PAPERS)
+
+    @staticmethod
     def render_pdf_link_button(paper: PaperORM) -> None:
         if not paper.pdf_url:
             return
@@ -117,3 +143,20 @@ class Components:
             "📄 Open PDF",
             paper.pdf_url,
         )
+
+    @staticmethod
+    def render_clear_filters_button(in_sidebar: bool = False) -> None:
+        container = st.sidebar if in_sidebar else st
+
+        if container.button("🧹 Clear filters"):
+            st.session_state.clear()
+            st.rerun()
+
+    @staticmethod
+    def render_paper_details(paper: PaperORM) -> None:
+        st.markdown(f"### {paper.title}")
+
+        st.markdown("**Publication Date:** " + str(paper.publication_date))
+        st.markdown("**Authors:** " + ", ".join(a.name for a in paper.authors))
+        st.markdown("**Domains:** " + ", ".join(d.name for d in paper.domains))
+        st.markdown("**Categories:** " + ", ".join(c.name for c in paper.categories))
