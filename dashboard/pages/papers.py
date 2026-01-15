@@ -8,6 +8,10 @@ st.title("📄 Papers")
 domains = LoadData.load_domains()
 categories = LoadData.load_categories()
 
+if st.sidebar.button("🧹 Clear filters"):
+    st.session_state.clear()
+    st.rerun()
+
 st.sidebar.header("🔍 Filters")
 
 if "selected_domain" not in st.session_state:
@@ -89,11 +93,21 @@ st.markdown("**Authors:** " + ", ".join(a.name for a in paper.authors))
 st.markdown("**Domains:** " + ", ".join(d.name for d in paper.domains))
 st.markdown("**Categories:** " + ", ".join(c.name for c in paper.categories))
 
+with st.container():
+    col1, col2 = st.columns(2)
 
-if st.button("🔎 View chunks"):
-    st.session_state["selected_paper_id"] = paper.id
-    st.session_state["selected_paper_title"] = paper.title
-    st.switch_page("pages/chunks.py")
+    with col1:
+        if st.button("🔎 View chunks"):
+            st.session_state["selected_paper_id"] = paper.id
+            st.session_state["selected_paper_title"] = paper.title
+            st.switch_page("pages/chunks.py")
+
+    with col2:
+        if paper.pdf_url:
+            st.link_button(
+                "📄 Open PDF",
+                paper.pdf_url,
+            )
 
 st.markdown("### 📝 Abstract")
 st.write(paper.abstract)

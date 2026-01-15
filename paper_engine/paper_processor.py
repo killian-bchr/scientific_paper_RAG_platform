@@ -177,8 +177,8 @@ class PaperProcessor:
     def create_chunks_with_embeddings(doc_body: Dict) -> List[Dict]:
         raw_chunks = PaperProcessor.create_chunks(doc_body)
         cleaned_chunks = PaperProcessor.split_chunks(raw_chunks)
-
         embeddings = PaperProcessor.create_embeddings(cleaned_chunks)
+
         return PaperProcessor.attach_embeddings_to_chunks(cleaned_chunks, embeddings)
 
     @staticmethod

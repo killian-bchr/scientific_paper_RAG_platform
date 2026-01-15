@@ -79,12 +79,17 @@ class Utils:
         return base_query.all()
 
     @staticmethod
+    def fecth_paper_by_id(session: Session, paper_id: int) -> PaperORM:
+        base_query = Utils.papers_base_query(session)
+        return base_query.filter(PaperORM.id == paper_id).first()
+
+    @staticmethod
     def fetch_paper_by_title(session: Session, title: str) -> PaperORM:
         base_query = Utils.papers_base_query(session)
         return base_query.filter(PaperORM.title == title).one()
 
     @staticmethod
-    def fetch_paper_by_period(
+    def fetch_papers_by_period(
         session: Session,
         start_date: Optional[Union[datetime, date, str]] = None,
         end_date: Optional[Union[datetime, date, str]] = None,

@@ -32,6 +32,4 @@ class Config:
 
     PDF_FOLDER_PATH = get_env_variable("PDF_FOLDER_PATH")
     EMBEDDING_MODEL = SentenceTransformer("all-MiniLM-L6-v2")
-    DATABASE_URL = (
-        "sqlite:///D:/Centrale/Projet Immersion/projet_immersion/database/papers.db"
-    )
+    DATABASE_URL = get_env_variable("DATABASE_URL")

@@ -74,7 +74,7 @@ class PaperExtractor:
 
         assembled = dump.get("assembled")
         if not assembled:
-            raise ValueError("'assembled' not doc")
+            raise ValueError("'assembled' not in doc")
 
         body = assembled.get("body")
         if not body:
