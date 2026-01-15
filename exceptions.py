@@ -62,3 +62,9 @@ class InvalidQuery(Exception):
     """Raised when a query is empty."""
 
     pass
+
+
+class InvalidPaperId(Exception):
+    """Raised when a 'paper_id' is wrong or doesn't exist"""
+
+    pass

@@ -6,18 +6,14 @@ from scipy.sparse import csr_matrix
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from database.session import get_session
 from database.tables import PaperORM
 from exceptions import InvalidQuery
-from helpers.utils import Utils
+from retriever.base import BaseRetriever
 
 
-class GeneralRetriever:
+class TfidfRetriever(BaseRetriever):
     def __init__(self, papers: List[PaperORM]):
-        self.papers = papers
-        self.paper_ids = [p.id for p in papers]
-
-        self.is_empty = len(papers) == 0
+        super().__init__(papers)
 
         self.title_vectorizer = TfidfVectorizer(stop_words="english")
         self.abstract_vectorizer = TfidfVectorizer(stop_words="english")
@@ -80,18 +76,3 @@ class GeneralRetriever:
         return {
             paper_id: score for paper_id, score in zip(self.paper_ids, final_scores)
         }
-
-    def top_k_papers(
-        self,
-        query: str,
-        k: int,
-    ) -> List[int]:
-        scores = self.compute_scores(query)
-        return sorted(scores, key=scores.get, reverse=True)[:k]
-
-    def retrieve_top_papers(self, query: str, k: int = 10) -> List[PaperORM]:
-        top_papers = self.top_k_papers(query, k)
-        with get_session() as session:
-            result = [Utils.fecth_paper_by_id(session, p_id) for p_id in top_papers]
-
-        return result

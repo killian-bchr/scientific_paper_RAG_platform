@@ -3,7 +3,7 @@ from datetime import date, datetime
 import streamlit as st
 from load_data import LoadData
 
-from retriever.general_retriever import GeneralRetriever
+from retriever import HybridRetriever
 
 DEFAULT_DOMAIN = "All"
 DEFAULT_CATEGORY = "All"
@@ -109,7 +109,7 @@ if search_clicked:
         st.warning("No paper matches the selected filters.")
         st.stop()
 
-    retriever = GeneralRetriever(filtered_papers)
+    retriever = HybridRetriever(filtered_papers)
 
     ranked_ids = retriever.top_k_papers(query, k=10)
 

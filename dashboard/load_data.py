@@ -6,7 +6,7 @@ import streamlit as st
 from database.session import get_session
 from database.tables import AuthorORM, CategoryORM, ChunkORM, DomainORM, PaperORM
 from helpers.utils import Utils
-from retriever.general_retriever import GeneralRetriever
+from retriever import HybridRetriever
 
 
 class LoadData:
@@ -44,5 +44,5 @@ class LoadData:
 
     @staticmethod
     @st.cache_resource
-    def load_retriever(papers: List[PaperORM]) -> GeneralRetriever:
-        return GeneralRetriever(papers)
+    def load_retriever(papers: List[PaperORM]) -> HybridRetriever:
+        return HybridRetriever(papers)
