@@ -84,13 +84,13 @@ class GeneralRetriever:
     def top_k_papers(
         self,
         query: str,
-        k: int = 10,
+        k: int,
     ) -> List[int]:
         scores = self.compute_scores(query)
         return sorted(scores, key=scores.get, reverse=True)[:k]
 
-    def retrieve_top_papers(self, query: str) -> List[PaperORM]:
-        top_papers = self.top_k_papers(query)
+    def retrieve_top_papers(self, query: str, k: int = 10) -> List[PaperORM]:
+        top_papers = self.top_k_papers(query, k)
         with get_session() as session:
             result = [Utils.fecth_paper_by_id(session, p_id) for p_id in top_papers]
 
