@@ -1,113 +1,57 @@
-from datetime import date, datetime
-
 import streamlit as st
+from components import Components
 from load_data import LoadData
+from service import Service
+from session_state import init_session_state
+
+init_session_state()
 
 st.title("📄 Papers")
 
 domains = LoadData.load_domains()
 categories = LoadData.load_categories()
 
-if st.sidebar.button("🧹 Clear filters"):
-    st.session_state.clear()
-    st.rerun()
+Components.render_clear_filters_button(in_sidebar=True)
 
 st.sidebar.header("🔍 Filters")
 
-if "selected_domain" not in st.session_state:
-    st.session_state.selected_domain = "All"
-
-if "selected_category" not in st.session_state:
-    st.session_state.selected_category = "All"
-
-selected_domain = st.sidebar.selectbox(
-    "Domain",
-    ["All"] + [d.name for d in domains],
-    index=(["All"] + [d.name for d in domains]).index(
-        st.session_state["selected_domain"]
-    ),
-)
-
-selected_category = st.sidebar.selectbox(
-    "Category",
-    ["All"] + [c.name for c in categories],
-    index=(["All"] + [c.name for c in categories]).index(
-        st.session_state["selected_category"]
-    ),
-)
-
-current_year = datetime.now().year
-years = list(range(1970, current_year + 1))
+selected_domain = Components.select_domains(domains, in_sidebar=True)
+selected_category = Components.select_categories(categories, in_sidebar=True)
 
 st.sidebar.header("📅 Publication period")
 
-start_year = st.sidebar.selectbox("Start year", ["All"] + years, index=0)
-
-end_year = st.sidebar.selectbox("End year", ["All"] + years, index=len(years))
-
-start_date, end_date = None, None
-
-if start_year != "All":
-    start_date = date(start_year, 1, 1)
-
-if end_year != "All":
-    end_date = date(end_year, 12, 31)
-
-if start_date and end_date and start_date > end_date:
-    st.sidebar.error("Start year must be before end year")
-    st.stop()
+start_year = Components.select_start_year(in_sidebar=True)
+end_year = Components.select_end_year(in_sidebar=True)
+start_date, end_date = Service.compute_start_and_end_date(start_year, end_year)
 
 papers = LoadData.load_papers(start_date, end_date)
 
-
-def paper_matches_filters(paper):
-    if selected_domain != "All":
-        if selected_domain not in [d.name for d in paper.domains]:
-            return False
-
-    if selected_category != "All":
-        if selected_category not in [c.name for c in paper.categories]:
-            return False
-
-    return True
-
-
-filtered_papers = [p for p in papers if paper_matches_filters(p)]
+filtered_papers = Service.filter_papers(
+    papers,
+    selected_domain,
+    selected_category,
+)
 
 if not filtered_papers:
     st.warning("No paper matches the selected filters.")
     st.stop()
 
-paper_titles = {p.title: p for p in filtered_papers}
+selected_title = Components.select_paper_title(filtered_papers)
 
-selected_title = st.selectbox("Select a paper", list(paper_titles.keys()))
-
-paper = paper_titles[selected_title]
+paper = Service.fetch_paper_selected(filtered_papers, selected_title)
 
 st.markdown("## 📌 Paper Details")
 
-st.markdown(f"### {paper.title}")
-
-st.markdown("**Publication Date:** " + str(paper.publication_date))
-st.markdown("**Authors:** " + ", ".join(a.name for a in paper.authors))
-st.markdown("**Domains:** " + ", ".join(d.name for d in paper.domains))
-st.markdown("**Categories:** " + ", ".join(c.name for c in paper.categories))
+Components.render_paper_details(paper)
 
 with st.container():
     col1, col2 = st.columns(2)
 
     with col1:
-        if st.button("🔎 View chunks"):
-            st.session_state["selected_paper_id"] = paper.id
-            st.session_state["selected_paper_title"] = paper.title
-            st.switch_page("pages/chunks.py")
+        Components.render_chunks_button(paper)
 
     with col2:
-        if paper.pdf_url:
-            st.link_button(
-                "📄 Open PDF",
-                paper.pdf_url,
-            )
+        Components.render_pdf_link_button(paper)
 
 st.markdown("### 📝 Abstract")
 st.write(paper.abstract)

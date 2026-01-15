@@ -1,13 +1,12 @@
 import streamlit as st
+from components import Components
 from load_data import LoadData
+from session_state import init_session_state
+
+init_session_state()
 
 st.title("🌐 Domains")
 
 domains = LoadData.load_domains()
 
-for domain in domains:
-    if st.button(domain.name, key=f"domain_{domain.id}"):
-        st.session_state["selected_domain"] = domain.name
-        st.session_state["selected_category"] = "All"
-
-        st.switch_page("pages/papers.py")
+Components.render_domain_buttons(domains)
