@@ -15,4 +15,4 @@ exclude =
     .gitignore,
     .isort.cfg,
 per-file-ignores =
-    app/api/*.py:B008
+    backend/api/*.py:B008

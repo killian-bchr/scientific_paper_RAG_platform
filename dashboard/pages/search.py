@@ -66,7 +66,7 @@ if st.session_state.get(SessionStateConstants.SEARCH_ACTIVE, False):
         st.warning("No paper matches the selected filters.")
         st.stop()
 
-    ranked_ids = Service.retrieve_top_k_papers(filtered_papers, query)
+    ranked_ids = Service.retrieve_top_k_papers_ids(filtered_papers, query)
 
     st.markdown("## 📄 Results")
 

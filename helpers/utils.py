@@ -97,9 +97,20 @@ class Utils:
         return base_query.all()
 
     @staticmethod
-    def fecth_paper_by_id(session: Session, paper_id: int) -> PaperORM:
+    def fetch_paper_by_id(session: Session, paper_id: int) -> PaperORM:
         base_query = Utils.papers_base_query(session)
         return base_query.filter(PaperORM.id == paper_id).first()
+
+    @staticmethod
+    def fetch_papers_by_ids(
+        session: Session, paper_ids: Optional[List[int]]
+    ) -> List[PaperORM]:
+        base_query = Utils.papers_base_query(session)
+
+        if paper_ids is None or len(paper_ids) == 0:
+            return base_query.all()
+
+        return base_query.filter(PaperORM.id.in_(paper_ids)).all()
 
     @staticmethod
     def fetch_paper_by_title(session: Session, title: str) -> PaperORM:
@@ -126,12 +137,24 @@ class Utils:
         return query.all()
 
     @staticmethod
+    def fetch_all_chunks(session: Session) -> List[ChunkORM]:
+        return session.query(ChunkORM).all()
+
+    @staticmethod
     def fetch_chunks_by_paper_id(session: Session, paper_id: int) -> List[ChunkORM]:
         return (
             session.query(ChunkORM)
             .filter(ChunkORM.paper_id == paper_id)
             .order_by(ChunkORM.page_no, ChunkORM.id)
             .all()
+        )
+
+    @staticmethod
+    def fetch_categories_by_domain_id(
+        session: Session, domain_id: int
+    ) -> List[CategoryORM]:
+        return (
+            session.query(CategoryORM).filter(CategoryORM.domain_id == domain_id).all()
         )
 
     @staticmethod
