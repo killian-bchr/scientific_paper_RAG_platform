@@ -1,3 +1,11 @@
+from enum import Enum
+
+
+class UserRole(str, Enum):
+    ADMIN = "admin"
+    USER = "user"
+
+
 class Names:
     DOMAIN = "Domain"
     CATEGORY = "Category"

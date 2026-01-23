@@ -2,9 +2,17 @@ from typing import Any, List
 
 from sqlalchemy.orm import Session
 
-from database.tables import AuthorORM, CategoryORM, ChunkORM, DomainORM, PaperORM
+from database.tables import (
+    AuthorORM,
+    CategoryORM,
+    ChunkORM,
+    DomainORM,
+    PaperORM,
+    UserORM,
+)
 from helpers.utils import Utils
 from models import Author, Category, Chunk, Domain, Paper
+from settings.constants import UserRole
 
 
 class CRUD:
@@ -20,6 +28,33 @@ class CRUD:
     def flush_object_to_session(session: Session, object: Any):
         CRUD.add_object_to_session(session, object)
         CRUD.flush_session(session)
+
+    @staticmethod
+    def user_to_orm(
+        session: Session,
+        username: str,
+        hashed_password: str,
+        role: UserRole = UserRole.USER,
+        flush: bool = False,
+    ) -> UserORM:
+        existing_user = Utils.fetch_user_by_username(session, username)
+        if existing_user:
+            return existing_user
+
+        # TODO: check if Admin role is authorized for correspondind username
+
+        user_orm = UserORM(
+            username=username,
+            hashed_password=hashed_password,
+            role=role.value,
+        )
+
+        CRUD.add_object_to_session(session, user_orm)
+
+        if flush:
+            CRUD.flush_session(session)
+
+        return user_orm
 
     @staticmethod
     def author_to_orm(

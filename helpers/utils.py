@@ -3,7 +3,14 @@ from typing import List, Optional, Union
 
 from sqlalchemy.orm import Query, Session, joinedload
 
-from database.tables import AuthorORM, CategoryORM, ChunkORM, DomainORM, PaperORM
+from database.tables import (
+    AuthorORM,
+    CategoryORM,
+    ChunkORM,
+    DomainORM,
+    PaperORM,
+    UserORM,
+)
 from exceptions import InvalidDate
 
 
@@ -31,6 +38,17 @@ class Utils:
                 pass
 
         raise InvalidDate(f"Impossible to parse this date : {input_date}")
+
+    @staticmethod
+    def fetch_user_by_username(
+        session: Session,
+        username: str,
+    ) -> Optional[UserORM]:
+        return session.query(UserORM).filter_by(username=username).first()
+
+    @staticmethod
+    def fetch_all_users(session: Session) -> List[UserORM]:
+        return session.query(UserORM).all()
 
     @staticmethod
     def fetch_all_authors(session: Session) -> List[AuthorORM]:
@@ -157,3 +175,7 @@ class Utils:
     @staticmethod
     def count_categories(session: Session) -> int:
         return session.query(CategoryORM).count()
+
+    @staticmethod
+    def count_chunks(session: Session) -> int:
+        return session.query(ChunkORM).count()

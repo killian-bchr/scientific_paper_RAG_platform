@@ -68,3 +68,21 @@ class InvalidPaperId(Exception):
     """Raised when a 'paper_id' is wrong or doesn't exist"""
 
     pass
+
+
+class AuthenticationError(Exception):
+    """Raised when authentication error occurs during the login process"""
+
+    pass
+
+
+class UserNotFoundError(AuthenticationError):
+    """Raised when the user is not found in the database"""
+
+    pass
+
+
+class InvalidPasswordError(AuthenticationError):
+    """Raised when the provided password is incorrect"""
+
+    pass
