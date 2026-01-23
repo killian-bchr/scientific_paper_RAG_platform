@@ -83,5 +83,6 @@ class PaperExtractor:
         return body
 
     def extract_paper_content(self, paper_name: str) -> Dict:
+        paper_name = paper_name.split("v")[0]
         doc = self.convert_paper(paper_name)
         return self.extract_body(doc)

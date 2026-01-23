@@ -33,3 +33,6 @@ class Config:
     PDF_FOLDER_PATH = get_env_variable("PDF_FOLDER_PATH")
     EMBEDDING_MODEL = SentenceTransformer("all-MiniLM-L6-v2")
     DATABASE_URL = get_env_variable("DATABASE_URL")
+    SECRET_KEY = get_env_variable("SECRET_KEY")
+    ALGORITHM = get_env_variable("ALGORITHM")
+    ACCESS_TOKEN_EXPIRE_MINUTES = int(get_env_variable("ACCESS_TOKEN_EXPIRE_MINUTES"))

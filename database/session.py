@@ -6,10 +6,12 @@ from database.base import SessionLocal
 
 
 @contextmanager
-def get_session():
+def get_session(commit: bool = False):
     session = SessionLocal()
     try:
         yield session
+        if commit:
+            session.commit()
 
     except SQLAlchemyError:
         session.rollback()
