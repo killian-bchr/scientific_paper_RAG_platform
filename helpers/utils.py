@@ -102,6 +102,17 @@ class Utils:
         return base_query.filter(PaperORM.id == paper_id).first()
 
     @staticmethod
+    def fetch_papers_by_ids(
+        session: Session, paper_ids: Optional[List[int]]
+    ) -> List[PaperORM]:
+        base_query = Utils.papers_base_query(session)
+
+        if paper_ids is None or len(paper_ids) == 0:
+            return base_query.all()
+
+        return base_query.filter(PaperORM.id.in_(paper_ids)).all()
+
+    @staticmethod
     def fetch_paper_by_title(session: Session, title: str) -> PaperORM:
         base_query = Utils.papers_base_query(session)
         return base_query.filter(PaperORM.title == title).one()

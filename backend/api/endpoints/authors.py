@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from backend.api.dependencies import get_current_user, get_db
 from backend.schemas.author import Author
-from backend.services.authors_service import AuthorService
+from backend.services.author_service import AuthorService
 
 router = APIRouter()
 

@@ -80,11 +80,11 @@ class Service:
         return paper_titles[paper_title]
 
     @staticmethod
-    def retrieve_top_k_papers(
+    def retrieve_top_k_papers_ids(
         papers: List[PaperORM],
         query: str,
         k: int = 10,
     ) -> List[int]:
         retriever = HybridRetriever(papers)
 
-        return retriever.top_k_papers(query, k)
+        return retriever.top_k_papers_ids(query, k)
