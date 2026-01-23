@@ -135,6 +135,14 @@ class Utils:
         )
 
     @staticmethod
+    def fetch_categories_by_domain_id(
+        session: Session, domain_id: int
+    ) -> List[CategoryORM]:
+        return (
+            session.query(CategoryORM).filter(CategoryORM.domain_id == domain_id).all()
+        )
+
+    @staticmethod
     def get_existing_author(session: Session, name: str) -> Optional[AuthorORM]:
         return session.query(AuthorORM).filter_by(name=name).first()
 

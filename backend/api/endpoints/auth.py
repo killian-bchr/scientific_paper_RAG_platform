@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from starlette import status
 
 from backend.api.dependencies import get_db
-from backend.schemas.auth import CreateUserRequest, LoginRequest, TokenResponse
+from backend.schemas.auth import CreateUserRequest, TokenResponse
 from backend.services import AuthService
 from exceptions import InvalidPasswordError, UserNotFoundError
 
@@ -31,16 +32,16 @@ async def register(
 
 @router.post("/login", response_model=TokenResponse)
 async def login(
-    data: LoginRequest,
+    form_data: OAuth2PasswordRequestForm = Depends(),
     session: Session = Depends(get_db),
 ):
     try:
-        user = AuthService.authenticate(session, data.username, data.password)
+        user = AuthService.authenticate(session, form_data.username, form_data.password)
 
     except UserNotFoundError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"User '{data.username}' not found",
+            detail=f"User '{form_data.username}' not found",
         )
 
     except InvalidPasswordError:
