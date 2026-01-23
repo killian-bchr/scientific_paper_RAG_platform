@@ -109,7 +109,6 @@ python-jose==3.5.0
 python-multipart==0.0.21
 python-pptx==1.0.2
 pytz==2025.2
-pywin32==311
 PyYAML==6.0.3
 pyzmq==27.1.0
 RapidFuzz==3.14.3
