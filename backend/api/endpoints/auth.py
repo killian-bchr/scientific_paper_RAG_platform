@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from starlette import status
 
-from app.api.dependencies import get_db
-from app.schemas.auth import CreateUserRequest, LoginRequest, TokenResponse
-from app.services import AuthService
+from backend.api.dependencies import get_db
+from backend.schemas.auth import CreateUserRequest, LoginRequest, TokenResponse
+from backend.services import AuthService
 from exceptions import InvalidPasswordError, UserNotFoundError
 
 router = APIRouter()
