@@ -97,7 +97,7 @@ class Utils:
         return base_query.all()
 
     @staticmethod
-    def fecth_paper_by_id(session: Session, paper_id: int) -> PaperORM:
+    def fetch_paper_by_id(session: Session, paper_id: int) -> PaperORM:
         base_query = Utils.papers_base_query(session)
         return base_query.filter(PaperORM.id == paper_id).first()
 
@@ -124,6 +124,10 @@ class Utils:
             query = query.filter(PaperORM.publication_date <= end_date)
 
         return query.all()
+
+    @staticmethod
+    def fetch_all_chunks(session: Session) -> List[ChunkORM]:
+        return session.query(ChunkORM).all()
 
     @staticmethod
     def fetch_chunks_by_paper_id(session: Session, paper_id: int) -> List[ChunkORM]:
