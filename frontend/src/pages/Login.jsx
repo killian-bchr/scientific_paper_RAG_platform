@@ -15,7 +15,7 @@ export default function Login() {
     try {
       await authService.login(username, password);
       window.location.href = "/";
-    } catch (err) {
+    } catch {
       setError("Invalid username or password");
     } finally {
       setLoading(false);
