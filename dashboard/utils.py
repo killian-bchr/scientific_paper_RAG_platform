@@ -4,7 +4,7 @@ from typing import Dict, List
 import streamlit as st
 from constants import Pages, SessionStateConstants
 
-from database.tables import ChunkORM, PaperORM
+from backend.database.tables import ChunkORM, PaperORM
 
 
 class Utils:

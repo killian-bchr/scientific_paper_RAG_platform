@@ -4,7 +4,13 @@ import streamlit as st
 from constants import DefaultValues, Pages, SessionStateConstants
 from utils import Utils
 
-from database.tables import AuthorORM, CategoryORM, ChunkORM, DomainORM, PaperORM
+from backend.database.tables import (
+    AuthorORM,
+    CategoryORM,
+    ChunkORM,
+    DomainORM,
+    PaperORM,
+)
 
 
 class Components:

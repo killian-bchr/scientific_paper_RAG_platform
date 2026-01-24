@@ -4,8 +4,8 @@ from typing import List, Tuple
 from constants import DefaultValues
 from utils import Utils
 
-from database.tables import CategoryORM, ChunkORM, DomainORM, PaperORM
-from retriever import HybridRetriever
+from backend.database.tables import CategoryORM, ChunkORM, DomainORM, PaperORM
+from backend.domain.retriever import HybridRetriever
 
 
 class Service:

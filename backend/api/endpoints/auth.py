@@ -4,9 +4,9 @@ from sqlalchemy.orm import Session
 from starlette import status
 
 from backend.api.dependencies import get_db
+from backend.core.exceptions import InvalidPasswordError, UserNotFoundError
 from backend.schemas.auth import CreateUserRequest, TokenResponse
 from backend.services import AuthService
-from exceptions import InvalidPasswordError, UserNotFoundError
 
 router = APIRouter()
 

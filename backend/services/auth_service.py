@@ -5,11 +5,11 @@ from jose import jwt
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-from config import Config
-from crud import CRUD
-from database.tables.user import UserORM
-from exceptions import InvalidPasswordError, UserNotFoundError
-from helpers.utils import Utils
+from backend.core.config import Config
+from backend.core.exceptions import InvalidPasswordError, UserNotFoundError
+from backend.database.crud import CRUD
+from backend.database.repositories import UserRepository
+from backend.database.tables.user import UserORM
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -17,7 +17,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 class AuthService:
     @staticmethod
     def create_user(session: Session, username: str, password: str) -> UserORM:
-        existing = Utils.fetch_user_by_username(session, username)
+        existing = UserRepository.fetch_user_by_username(session, username)
         if existing:
             raise ValueError(f"Username '{username}' is already taken")
 
@@ -32,7 +32,7 @@ class AuthService:
 
     @staticmethod
     def authenticate(session: Session, username: str, password: str) -> UserORM:
-        user = Utils.fetch_user_by_username(session, username)
+        user = UserRepository.fetch_user_by_username(session, username)
         if not user:
             raise UserNotFoundError(f"User '{username}' not found")
 

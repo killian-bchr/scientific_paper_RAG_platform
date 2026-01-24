@@ -11,7 +11,9 @@ exclude =
     papers/,
     *.db,
     README.md,
-    requirements.txt,
+    *.txt,
+    backend/requirements.txt,
+    dashboard/requirements.txt
     .gitignore,
     .isort.cfg,
 per-file-ignores =

@@ -2,9 +2,9 @@ from typing import List, Optional, Tuple
 
 from sqlalchemy.orm import Session
 
-from database.tables import PaperORM
-from helpers.utils import Utils
-from retriever import HybridRetriever
+from backend.database.repositories.paper_repository import PaperRepository
+from backend.database.tables import PaperORM
+from backend.domain.retriever import HybridRetriever
 
 
 class SearchService:
@@ -15,7 +15,7 @@ class SearchService:
         paper_ids: Optional[List[int]] = None,
         k: int = 10,
     ) -> List[Tuple[PaperORM, float]]:
-        papers = Utils.fetch_papers_by_ids(session, paper_ids)
+        papers = PaperRepository.fetch_papers_by_ids(session, paper_ids)
         if not papers:
             return []
 

@@ -1,7 +1,12 @@
 import streamlit as st
 
-from database.session import get_session
-from helpers.utils import Utils
+from backend.database.repositories import (
+    AuthorRepository,
+    CategoryRepository,
+    DomainRepository,
+    PaperRepository,
+)
+from backend.database.session import get_session
 
 st.set_page_config(page_title="Paper DB", layout="wide")
 
@@ -11,10 +16,10 @@ if "view" not in st.session_state:
     st.session_state.view = "home"
 
 with get_session() as session:
-    n_papers = Utils.count_papers(session)
-    n_authors = Utils.count_authors(session)
-    n_domains = Utils.count_domains(session)
-    n_categories = Utils.count_categories(session)
+    n_papers = PaperRepository.count_papers(session)
+    n_authors = AuthorRepository.count_authors(session)
+    n_domains = DomainRepository.count_domains(session)
+    n_categories = CategoryRepository.count_categories(session)
 
 col1, col2, col3, col4 = st.columns(4)
 
