@@ -1,10 +1,15 @@
 from typing import Any, List
 
-from helpers.utils import Utils
-from models import Author, Category, Chunk, Domain, Paper
-from settings.constants import UserRole
 from sqlalchemy.orm import Session
 
+from backend.core.constants import UserRole
+from backend.database.repositories import (
+    AuthorRepository,
+    CategoryRepository,
+    DomainRepository,
+    PaperRepository,
+    UserRepository,
+)
 from backend.database.tables import (
     AuthorORM,
     CategoryORM,
@@ -13,6 +18,7 @@ from backend.database.tables import (
     PaperORM,
     UserORM,
 )
+from backend.models import Author, Category, Chunk, Domain, Paper
 
 
 class CRUD:
@@ -37,7 +43,7 @@ class CRUD:
         role: UserRole = UserRole.USER,
         flush: bool = False,
     ) -> UserORM:
-        existing_user = Utils.fetch_user_by_username(session, username)
+        existing_user = UserRepository.fetch_user_by_username(session, username)
         if existing_user:
             return existing_user
 
@@ -60,7 +66,7 @@ class CRUD:
     def author_to_orm(
         session: Session, author: Author, flush: bool = False
     ) -> AuthorORM:
-        existing_author = Utils.get_existing_author(session, author.name)
+        existing_author = AuthorRepository.get_existing_author(session, author.name)
         if existing_author:
             return existing_author
 
@@ -88,7 +94,7 @@ class CRUD:
     def domain_to_orm(
         session: Session, domain: Domain, flush: bool = False
     ) -> DomainORM:
-        existing_domain = Utils.get_existing_domain(session, domain.name)
+        existing_domain = DomainRepository.get_existing_domain(session, domain.name)
         if existing_domain:
             return existing_domain
 
@@ -118,13 +124,13 @@ class CRUD:
         category: Category,
         flush: bool = False,
     ) -> CategoryORM:
-        existing_category = Utils.get_existing_category(
+        existing_category = CategoryRepository.get_existing_category(
             session, category.name, category.domain.name
         )
         if existing_category:
             return existing_category
 
-        domain_orm = Utils.get_existing_domain(session, category.domain.name)
+        domain_orm = DomainRepository.get_existing_domain(session, category.domain.name)
         if domain_orm is None:
             raise ValueError(
                 "The corresponding domain to this category should already exists !"
@@ -156,7 +162,7 @@ class CRUD:
 
     @staticmethod
     def paper_to_orm(session: Session, paper: Paper, flush: bool = False) -> PaperORM:
-        existing_paper = Utils.get_existing_paper(session, paper.arxiv_id)
+        existing_paper = PaperRepository.get_existing_paper(session, paper.arxiv_id)
         if existing_paper:
             return existing_paper
 

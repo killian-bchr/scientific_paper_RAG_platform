@@ -1,11 +1,11 @@
 from typing import Dict, List
 
 import numpy as np
-from helpers.utils import Utils
 from numpy import ndarray
 from retriever.base import BaseRetriever
 from sklearn.metrics.pairwise import cosine_similarity
 
+from backend.database.repositories import ChunkRepository
 from backend.database.session import get_session
 from backend.database.tables import PaperORM
 from config import Config
@@ -32,7 +32,7 @@ class EmbeddingRetriever(BaseRetriever):
             raise InvalidPaperId(f"Paper: {paper_id} doesn't match any paper selected")
 
         with get_session() as session:
-            chunks = Utils.fetch_chunks_by_paper_id(session, paper_id)
+            chunks = ChunkRepository.fetch_chunks_by_paper_id(session, paper_id)
 
         if not chunks or len(chunks) == 0:
             return np.empty((0, self.model.get_sentence_embedding_dimension()))

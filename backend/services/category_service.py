@@ -1,15 +1,15 @@
 from typing import List
 
-from helpers.utils import Utils
 from sqlalchemy.orm import Session
 
+from backend.database.repositories import CategoryRepository
 from backend.database.tables import CategoryORM
 
 
 class CategoryService:
     @staticmethod
     def get_all_categories(session: Session) -> List[CategoryORM]:
-        return Utils.fetch_all_categories(session)
+        return CategoryRepository.fetch_all_categories(session)
 
     @staticmethod
     def get_category_by_id(session: Session, category_id: int) -> CategoryORM:

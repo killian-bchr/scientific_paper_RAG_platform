@@ -1,9 +1,9 @@
 import jose as jwt
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from helpers.utils import Utils
 from sqlalchemy.orm import Session
 
+from backend.database.repositories import UserRepository
 from backend.database.session import get_session
 from backend.services import AuthService
 
@@ -22,7 +22,7 @@ def get_current_user(
     try:
         payload = AuthService.decode_token(token)
         username = payload.get("sub")
-        user = Utils.fetch_user_by_username(session, username)
+        user = UserRepository.fetch_user_by_username(session, username)
         if not user:
             raise HTTPException(status_code=401, detail=f"User {username} not found")
 
