@@ -7,10 +7,10 @@ from backend.api.dependencies import get_current_user, get_db
 from backend.schemas.chunk import Chunk
 from backend.services.chunk_service import ChunkService
 
-router = APIRouter()
+router = APIRouter(prefix="/chunks", tags=["chunks"])
 
 
-@router.get("/chunks", response_model=List[Chunk])
+@router.get("/", response_model=List[Chunk])
 async def get_chunks(
     session: Session = Depends(get_db),
     current_user=Depends(get_current_user),
@@ -22,7 +22,7 @@ async def get_chunks(
     return chunks
 
 
-@router.get("/chunks/{chunk_id}", response_model=Chunk)
+@router.get("/{chunk_id}", response_model=Chunk)
 async def get_chunk(
     chunk_id: int,
     session: Session = Depends(get_db),

@@ -8,10 +8,10 @@ from backend.schemas.chunk import Chunk
 from backend.schemas.paper import Paper
 from backend.services.paper_service import PaperService
 
-router = APIRouter()
+router = APIRouter(prefix="/papers", tags=["papers"])
 
 
-@router.get("/papers", response_model=List[Paper])
+@router.get("/", response_model=List[Paper])
 async def get_papers(
     session: Session = Depends(get_db),
     current_user=Depends(get_current_user),
@@ -23,7 +23,7 @@ async def get_papers(
     return papers
 
 
-@router.get("/papers/{paper_id}", response_model=Paper)
+@router.get("/{paper_id}", response_model=Paper)
 async def get_paper(
     paper_id: int,
     session: Session = Depends(get_db),
@@ -38,7 +38,7 @@ async def get_paper(
     return paper
 
 
-@router.get("/papers/{paper_id}/chunks", response_model=List[Chunk])
+@router.get("/{paper_id}/chunks", response_model=List[Chunk])
 async def get_paper_chunks(
     paper_id: int,
     session: Session = Depends(get_db),

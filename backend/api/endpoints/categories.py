@@ -7,10 +7,10 @@ from backend.api.dependencies import get_current_user, get_db
 from backend.schemas.category import Category
 from backend.services.category_service import CategoryService
 
-router = APIRouter()
+router = APIRouter(prefix="/categories", tags=["categories"])
 
 
-@router.get("/categories", response_model=List[Category])
+@router.get("/", response_model=List[Category])
 async def get_categories(
     session: Session = Depends(get_db),
     current_user=Depends(get_current_user),
@@ -22,7 +22,7 @@ async def get_categories(
     return categories
 
 
-@router.get("/categories/{category_id}", response_model=Category)
+@router.get("/{category_id}", response_model=Category)
 async def get_category(
     category_id: int,
     session: Session = Depends(get_db),
