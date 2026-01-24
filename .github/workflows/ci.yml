@@ -6,8 +6,8 @@ on:
   pull_request: {}
 
 jobs:
-  setup:
-    name: 🛠️ Setup Environment
+  setup-backend:
+    name: 🛠️ Setup Backend Environment
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,20 +17,42 @@ jobs:
         with:
           python-version: "3.11.9"
 
-      - name: Install dependencies
+      - name: Install backend dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r backend/requirements.txt
 
-      - name: Cache pip
+      - name: Cache backend pip
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-pip-backend-${{ hashFiles('backend/requirements.txt') }}
+
+  setup-dashboard:
+    name: 🛠️ Setup Dashboard Environment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11.9"
+
+      - name: Install dashboard dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r dashboard/requirements.txt
+
+      - name: Cache dashboard pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-dashboard-${{ hashFiles('dashboard/requirements.txt') }}
 
   linting:
     name: 🔍 Linting Checks
-    needs: setup
+    needs: [setup-backend, setup-dashboard]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -43,22 +65,22 @@ jobs:
       - name: Install linting tools
         run: |
           python -m pip install --upgrade pip
-          pip install flake8==6.0.0 black==23.3.0 isort==5.12.0
+          pip install flake8==7.3.0 black==26.1.0 isort==7.0.0
 
       - name: Run Flake8
         run: |
           echo "::group::🧹 Flake8 Code Analysis"
-          flake8 . --count --show-source --statistics
+          flake8 **/*.py --count --show-source --statistics
           echo "::endgroup::"
 
       - name: Check Black Formatting
         run: |
           echo "::group::🎨 Black Format Check"
-          black --check .
+          black --check **/*.py
           echo "::endgroup::"
 
       - name: Check Import Sorting
         run: |
           echo "::group::📦 isort Import Check"
-          isort --check .
+          isort --check **/*.py
           echo "::endgroup::"

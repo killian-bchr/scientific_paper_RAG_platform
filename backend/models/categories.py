@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from models.domains import Domain
+from backend.models.domains import Domain
 
 
 @dataclass(eq=True)

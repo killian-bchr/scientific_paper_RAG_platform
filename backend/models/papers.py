@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from datetime import date
 from typing import List
 
-from models import Author, Category, Domain
+from backend.models import Author, Category, Domain
 
 
 @dataclass(eq=True)

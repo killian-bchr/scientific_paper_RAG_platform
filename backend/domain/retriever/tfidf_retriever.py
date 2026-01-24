@@ -2,13 +2,13 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 from numpy import ndarray
-from retriever.base import BaseRetriever
 from scipy.sparse import csr_matrix
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 from backend.core.exceptions import InvalidQuery
 from backend.database.tables import PaperORM
+from backend.domain.retriever.base import BaseRetriever
 
 
 class TfidfRetriever(BaseRetriever):

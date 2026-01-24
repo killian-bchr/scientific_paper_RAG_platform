@@ -2,7 +2,6 @@ from typing import Dict, List
 
 import numpy as np
 from numpy import ndarray
-from retriever.base import BaseRetriever
 from sklearn.metrics.pairwise import cosine_similarity
 
 from backend.core.config import Config
@@ -10,6 +9,7 @@ from backend.core.exceptions import InvalidPaperId, InvalidQuery
 from backend.database.repositories import ChunkRepository
 from backend.database.session import get_session
 from backend.database.tables import PaperORM
+from backend.domain.retriever.base import BaseRetriever
 
 
 class EmbeddingRetriever(BaseRetriever):
