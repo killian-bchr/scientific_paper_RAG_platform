@@ -5,8 +5,12 @@ from docling.datamodel.document import ConversionResult
 from docling.document_converter import DocumentConverter
 from huggingface_hub import hf_hub_download
 
-from config import Config
-from exceptions import InvalidPDFFormatError, PDFConversionError, PDFNotFoundError
+from backend.core.config import Config
+from backend.core.exceptions import (
+    InvalidPDFFormatError,
+    PDFConversionError,
+    PDFNotFoundError,
+)
 
 
 class PaperExtractor:

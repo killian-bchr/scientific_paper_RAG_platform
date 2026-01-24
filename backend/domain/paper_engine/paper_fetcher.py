@@ -3,7 +3,7 @@ from typing import Dict, List, Optional
 import arxiv
 from arxiv import Result, Search, SortCriterion
 
-from exceptions import (
+from backend.core.exceptions import (
     InvalidSearchParametersError,
     MissingSearchParameterError,
     PaperNotFound,

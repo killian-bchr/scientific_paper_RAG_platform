@@ -6,9 +6,9 @@ from arxiv import Result
 from numpy import ndarray
 
 from backend.core.arxiv_categories import ARXIV_CATEGORIES
+from backend.core.config import Config
 from backend.core.constants import Category, DefaultCategories, Domains, Names
-from config import Config
-from exceptions import DownloadingPDFError
+from backend.core.exceptions import DownloadingPDFError
 
 logger = logging.getLogger(__name__)
 

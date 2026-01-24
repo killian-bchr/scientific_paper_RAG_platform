@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from typing import Optional, Union
 
-from exceptions import InvalidDate
+from backend.core.exceptions import InvalidDate
 
 
 class DateUtils:

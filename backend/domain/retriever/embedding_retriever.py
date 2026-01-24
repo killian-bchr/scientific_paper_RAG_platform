@@ -5,11 +5,11 @@ from numpy import ndarray
 from retriever.base import BaseRetriever
 from sklearn.metrics.pairwise import cosine_similarity
 
+from backend.core.config import Config
+from backend.core.exceptions import InvalidPaperId, InvalidQuery
 from backend.database.repositories import ChunkRepository
 from backend.database.session import get_session
 from backend.database.tables import PaperORM
-from config import Config
-from exceptions import InvalidPaperId, InvalidQuery
 
 
 class EmbeddingRetriever(BaseRetriever):

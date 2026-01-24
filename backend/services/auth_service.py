@@ -5,11 +5,11 @@ from jose import jwt
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
+from backend.core.config import Config
+from backend.core.exceptions import InvalidPasswordError, UserNotFoundError
+from backend.database.crud import CRUD
 from backend.database.repositories import UserRepository
 from backend.database.tables.user import UserORM
-from config import Config
-from crud import CRUD
-from exceptions import InvalidPasswordError, UserNotFoundError
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

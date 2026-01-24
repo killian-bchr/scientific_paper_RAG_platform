@@ -7,8 +7,8 @@ from scipy.sparse import csr_matrix
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+from backend.core.exceptions import InvalidQuery
 from backend.database.tables import PaperORM
-from exceptions import InvalidQuery
 
 
 class TfidfRetriever(BaseRetriever):

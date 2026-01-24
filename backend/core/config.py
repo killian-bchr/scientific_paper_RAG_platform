@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 
-from exceptions import MissingEnvironmentVariableError
+from backend.core.exceptions import MissingEnvironmentVariableError
 
 load_dotenv("config.env")
 
