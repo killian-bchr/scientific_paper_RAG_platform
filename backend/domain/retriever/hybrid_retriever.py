@@ -1,9 +1,10 @@
 from typing import Dict, List
 
-from database.tables import PaperORM
 from retriever.base import BaseRetriever
 from retriever.embedding_retriever import EmbeddingRetriever
 from retriever.tfidf_retriever import TfidfRetriever
+
+from backend.database.tables import PaperORM
 
 
 class HybridRetriever(BaseRetriever):

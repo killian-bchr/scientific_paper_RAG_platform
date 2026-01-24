@@ -1,7 +1,7 @@
 import streamlit as st
-
-from database.session import get_session
 from helpers.utils import Utils
+
+from backend.database.session import get_session
 
 st.set_page_config(page_title="Paper DB", layout="wide")
 

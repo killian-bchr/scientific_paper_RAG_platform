@@ -1,6 +1,6 @@
 from sqlalchemy import Column, ForeignKey, Integer, Table
 
-from database.base import Base
+from backend.database.base import Base
 
 paper_author = Table(
     "paper_author",

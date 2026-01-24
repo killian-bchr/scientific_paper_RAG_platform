@@ -3,7 +3,8 @@ from typing import List, Optional, Union
 
 from sqlalchemy.orm import Query, Session, joinedload
 
-from database.tables import (
+from backend.core.date_utils import DateUtils
+from backend.database.tables import (
     AuthorORM,
     CategoryORM,
     ChunkORM,
@@ -11,34 +12,9 @@ from database.tables import (
     PaperORM,
     UserORM,
 )
-from exceptions import InvalidDate
 
 
 class Utils:
-    @staticmethod
-    def parse_date(input_date: Union[str, date, datetime]) -> Optional[date]:
-        if input_date is None:
-            return None
-
-        if isinstance(input_date, date) and not isinstance(input_date, datetime):
-            return input_date
-
-        if isinstance(input_date, datetime):
-            return input_date.date()
-
-        if isinstance(input_date, str):
-            try:
-                return datetime.strptime(input_date, "%Y-%m-%d").date()
-            except ValueError:
-                pass
-
-            try:
-                return datetime.strptime(input_date, "%Y-%m").date()
-            except ValueError:
-                pass
-
-        raise InvalidDate(f"Impossible to parse this date : {input_date}")
-
     @staticmethod
     def fetch_user_by_username(
         session: Session,
@@ -123,8 +99,8 @@ class Utils:
         start_date: Optional[Union[datetime, date, str]] = None,
         end_date: Optional[Union[datetime, date, str]] = None,
     ) -> List[PaperORM]:
-        start_date = Utils.parse_date(start_date)
-        end_date = Utils.parse_date(end_date)
+        start_date = DateUtils.parse_date(start_date)
+        end_date = DateUtils.parse_date(end_date)
 
         query = Utils.papers_base_query(session)
 

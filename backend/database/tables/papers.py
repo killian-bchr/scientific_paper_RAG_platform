@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Date, Integer, String, Text
 from sqlalchemy.orm import relationship
 
-from database.base import Base
-from database.tables.association_tables import (
+from backend.database.base import Base
+from backend.database.tables.association_tables import (
     paper_author,
     paper_category,
     paper_domain,

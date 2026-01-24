@@ -1,4 +1,4 @@
-from settings.constants import (
+from backend.core.constants import (
     BiologyCategories,
     ComputerScienceCategories,
     DefaultCategories,

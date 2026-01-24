@@ -1,8 +1,8 @@
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from database.base import Base
-from database.tables.association_tables import paper_category
+from backend.database.base import Base
+from backend.database.tables.association_tables import paper_category
 
 
 class CategoryORM(Base):

@@ -1,8 +1,11 @@
 from typing import Any, List
 
+from helpers.utils import Utils
+from models import Author, Category, Chunk, Domain, Paper
+from settings.constants import UserRole
 from sqlalchemy.orm import Session
 
-from database.tables import (
+from backend.database.tables import (
     AuthorORM,
     CategoryORM,
     ChunkORM,
@@ -10,9 +13,6 @@ from database.tables import (
     PaperORM,
     UserORM,
 )
-from helpers.utils import Utils
-from models import Author, Category, Chunk, Domain, Paper
-from settings.constants import UserRole
 
 
 class CRUD:

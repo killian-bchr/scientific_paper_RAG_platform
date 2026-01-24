@@ -2,10 +2,10 @@ from datetime import date
 from typing import List, Tuple
 
 from constants import DefaultValues
+from retriever import HybridRetriever
 from utils import Utils
 
-from database.tables import CategoryORM, ChunkORM, DomainORM, PaperORM
-from retriever import HybridRetriever
+from backend.database.tables import CategoryORM, ChunkORM, DomainORM, PaperORM
 
 
 class Service:

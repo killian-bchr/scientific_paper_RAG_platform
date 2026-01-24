@@ -5,10 +5,10 @@ from typing import Dict, List, Optional, Tuple
 from arxiv import Result
 from numpy import ndarray
 
+from backend.core.arxiv_categories import ARXIV_CATEGORIES
+from backend.core.constants import Category, DefaultCategories, Domains, Names
 from config import Config
 from exceptions import DownloadingPDFError
-from settings.arxiv_categories import ARXIV_CATEGORIES
-from settings.constants import Category, DefaultCategories, Domains, Names
 
 logger = logging.getLogger(__name__)
 

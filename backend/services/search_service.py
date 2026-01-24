@@ -1,10 +1,10 @@
 from typing import List, Optional, Tuple
 
+from helpers.utils import Utils
 from sqlalchemy.orm import Session
 
-from database.tables import PaperORM
-from helpers.utils import Utils
-from retriever import HybridRetriever
+from backend.database.tables import PaperORM
+from backend.domain.retriever import HybridRetriever
 
 
 class SearchService:

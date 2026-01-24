@@ -1,9 +1,9 @@
 from typing import List
 
+from helpers.utils import Utils
 from sqlalchemy.orm import Session
 
-from database.tables import AuthorORM
-from helpers.utils import Utils
+from backend.database.tables import AuthorORM
 
 
 class AuthorService:

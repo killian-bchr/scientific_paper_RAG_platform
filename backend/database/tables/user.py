@@ -2,8 +2,8 @@ from datetime import datetime
 
 from sqlalchemy import Column, Date, Integer, String
 
-from database.base import Base
-from settings.constants import UserRole
+from backend.core.constants import UserRole
+from backend.database.base import Base
 
 
 class UserORM(Base):

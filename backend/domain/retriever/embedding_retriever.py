@@ -1,15 +1,15 @@
 from typing import Dict, List
 
 import numpy as np
+from helpers.utils import Utils
 from numpy import ndarray
+from retriever.base import BaseRetriever
 from sklearn.metrics.pairwise import cosine_similarity
 
+from backend.database.session import get_session
+from backend.database.tables import PaperORM
 from config import Config
-from database.session import get_session
-from database.tables import PaperORM
 from exceptions import InvalidPaperId, InvalidQuery
-from helpers.utils import Utils
-from retriever.base import BaseRetriever
 
 
 class EmbeddingRetriever(BaseRetriever):

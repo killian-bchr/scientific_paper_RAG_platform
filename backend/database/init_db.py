@@ -1,5 +1,5 @@
-from database import tables  # noqa: F401, E402
-from database.base import Base, engine
+from backend.database import tables  # noqa: F401, E402
+from backend.database.base import Base, engine
 
 
 def init_db():

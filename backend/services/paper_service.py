@@ -1,9 +1,9 @@
 from typing import List
 
+from helpers.utils import Utils
 from sqlalchemy.orm import Session
 
-from database.tables import ChunkORM, PaperORM
-from helpers.utils import Utils
+from backend.database.tables import ChunkORM, PaperORM
 
 
 class PaperService:

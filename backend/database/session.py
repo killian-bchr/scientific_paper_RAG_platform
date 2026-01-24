@@ -2,7 +2,7 @@ from contextlib import contextmanager
 
 from sqlalchemy.exc import SQLAlchemyError
 
-from database.base import SessionLocal
+from backend.database.base import SessionLocal
 
 
 @contextmanager

@@ -2,7 +2,7 @@ from pgvector.sqlalchemy import Vector
 from sqlalchemy import Column, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 
-from database.base import Base
+from backend.database.base import Base
 
 
 class ChunkORM(Base):

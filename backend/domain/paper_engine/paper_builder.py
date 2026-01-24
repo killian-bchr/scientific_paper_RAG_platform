@@ -1,7 +1,6 @@
 from typing import Dict, List
 
 from arxiv import Result
-
 from models import Author, Category, Chunk, Domain, Paper
 from paper_engine.paper_processor import PaperProcessor
 

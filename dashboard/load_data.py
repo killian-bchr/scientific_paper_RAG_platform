@@ -2,11 +2,17 @@ from datetime import date
 from typing import List, Optional
 
 import streamlit as st
-
-from database.session import get_session
-from database.tables import AuthorORM, CategoryORM, ChunkORM, DomainORM, PaperORM
 from helpers.utils import Utils
 from retriever import HybridRetriever
+
+from backend.database.session import get_session
+from backend.database.tables import (
+    AuthorORM,
+    CategoryORM,
+    ChunkORM,
+    DomainORM,
+    PaperORM,
+)
 
 
 class LoadData:
