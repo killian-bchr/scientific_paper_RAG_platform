@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -13,10 +13,20 @@ router = APIRouter(prefix="/papers", tags=["papers"])
 
 @router.get("/", response_model=List[Paper])
 async def get_papers(
+    domain_id: Optional[int] = None,
+    category_id: Optional[int] = None,
+    start_year: Optional[int] = None,
+    end_year: Optional[int] = None,
     session: Session = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    papers = PaperService.get_all_papers(session)
+    papers = PaperService.get_filtered_papers(
+        session=session,
+        domain_id=domain_id,
+        category_id=category_id,
+        start_year=start_year,
+        end_year=end_year,
+    )
     if not papers:
         return []
 

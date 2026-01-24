@@ -4,7 +4,7 @@ from typing import List, Optional, Union
 from sqlalchemy.orm import Query, Session, joinedload
 
 from backend.core.date_utils import DateUtils
-from backend.database.tables import PaperORM
+from backend.database.tables import CategoryORM, DomainORM, PaperORM
 
 
 class PaperRepository:
@@ -58,6 +58,37 @@ class PaperRepository:
 
         if end_date:
             query = query.filter(PaperORM.publication_date <= end_date)
+
+        return query.all()
+
+    @staticmethod
+    def fetch_filtered_papers(
+        session: Session,
+        domain_id: Optional[int] = None,
+        category_id: Optional[int] = None,
+        start_date: Optional[date] = None,
+        end_date: Optional[date] = None,
+    ) -> List[PaperORM]:
+        start_date = DateUtils.parse_date(start_date)
+        end_date = DateUtils.parse_date(end_date)
+
+        query = PaperRepository.papers_base_query(session)
+
+        if domain_id:
+            query = query.join(PaperORM.domains).filter(DomainORM.id == domain_id)
+
+        if category_id:
+            query = query.join(PaperORM.categories).filter(
+                CategoryORM.id == category_id
+            )
+
+        if start_date:
+            query = query.filter(PaperORM.publication_date >= start_date)
+
+        if end_date:
+            query = query.filter(PaperORM.publication_date <= end_date)
+
+        query = query.distinct()
 
         return query.all()
 

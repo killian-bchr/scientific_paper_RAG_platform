@@ -1,30 +1,23 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { domainService } from "../services/domainService";
-import { authService } from "../services/authService";
 
 export default function Domains() {
-  const [domains, setDomains] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    data: domains,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["domains"],
+    queryFn: domainService.getAll,
+    staleTime: 5 * 60 * 1000,
+  });
 
-  useEffect(() => {
-    domainService
-      .getAll()
-      .then(setDomains)
-      .finally(() => setLoading(false));
-  }, []);
-
-  const handleLogout = () => {
-    authService.logout();
-    window.location.href = "/login";
-  };
-
-  if (loading) return <p>Loading...</p>;
+  if (isLoading) return <p>Loading Domains...</p>;
+  if (error) return <p>Error loading domains</p>;
 
   return (
     <div style={{ padding: 20 }}>
-      <h2>Domains</h2>
-
-      <button onClick={handleLogout}>Logout</button>
+      <h2>🌐 Domains</h2>
 
       <ul>
         {domains.map((d) => (
