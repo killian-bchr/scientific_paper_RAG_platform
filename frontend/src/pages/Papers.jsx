@@ -5,6 +5,7 @@ import { domainService } from "../services/domainService";
 import { paperService } from "../services/paperService";
 import PaperDetailsModal from "../components/PaperDetailsModal";
 import PaperFilters from "../components/PaperFilters";
+import Header from "../components/Header";
 
 export default function Papers() {
   const navigate = useNavigate();
@@ -61,7 +62,7 @@ export default function Papers() {
 
   return (
     <div style={{ padding: 24 }}>
-      <h1>📄 Papers</h1>
+      <Header title="📄 Papers" />
 
       <PaperFilters
         domains={domains}
@@ -101,6 +102,25 @@ export default function Papers() {
                 >
                   View Chunks
                 </button>
+
+                {p.pdf_url && (
+                  <a
+                    href={p.pdf_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      marginLeft: 8,
+                      padding: "4px 8px",
+                      background: "#007bff",
+                      color: "white",
+                      borderRadius: 4,
+                      textDecoration: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    📄 Open PDF
+                  </a>
+                )}
               </li>
             ))}
           </ul>

@@ -27,7 +27,11 @@ export default function PaperDetailsModal({ paper, isLoading, onClose }) {
             </p>
             <p>
               <strong>Categories:</strong>{" "}
-              {paper.categories?.map((c) => c.name).join(", ") || "—"}
+              {paper.categories
+                ? Array.from(new Set(paper.categories.map((c) => c.name))).join(
+                    ", ",
+                  )
+                : "—"}
             </p>
             <h4>Abstract</h4>
             <p>{paper.abstract || "No abstract available"}</p>

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { authorService } from "../services/authorService";
+import Header from "../components/Header";
 
 export default function Authors() {
   const {
@@ -17,7 +18,7 @@ export default function Authors() {
 
   return (
     <div style={{ padding: 20 }}>
-      <h1>👤 Authors</h1>
+      <Header title="👤 Authors" />
 
       <p>
         Total authors: <strong>{authors.length}</strong>

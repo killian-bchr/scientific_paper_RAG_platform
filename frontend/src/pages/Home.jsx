@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { statsService } from "../services/statsService";
 import { authService } from "../services/authService";
 import SearchPapers from "../components/SearchPapers";
+import Metric from "../components/Metric";
 
 export default function Home() {
   const { data, isLoading, error } = useQuery({
@@ -34,22 +35,17 @@ export default function Home() {
       </div>
 
       <div style={styles.grid}>
-        <Metric label="📄 Papers" value={data.total_papers} />
-        <Metric label="👤 Authors" value={data.total_authors} />
-        <Metric label="🏷️ Domains" value={data.total_domains} />
-        <Metric label="📂 Categories" value={data.total_categories} />
+        <Metric label="📄 Papers" value={data.total_papers} to="/papers" />
+        <Metric label="👤 Authors" value={data.total_authors} to="/authors" />
+        <Metric label="🏷️ Domains" value={data.total_domains} to="/domains" />
+        <Metric
+          label="📂 Categories"
+          value={data.total_categories}
+          to="/categories"
+        />
       </div>
 
       <SearchPapers />
-    </div>
-  );
-}
-
-function Metric({ label, value }) {
-  return (
-    <div style={styles.card}>
-      <h3>{label}</h3>
-      <p style={styles.value}>{value}</p>
     </div>
   );
 }

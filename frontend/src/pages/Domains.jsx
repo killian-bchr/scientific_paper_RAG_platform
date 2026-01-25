@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { domainService } from "../services/domainService";
+import Header from "../components/Header";
 
 export default function Domains() {
   const {
@@ -17,7 +18,7 @@ export default function Domains() {
 
   return (
     <div style={{ padding: 20 }}>
-      <h2>🌐 Domains</h2>
+      <Header title="🌐 Domains" />
 
       <ul>
         {domains.map((d) => (
