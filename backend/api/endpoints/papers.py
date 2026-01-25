@@ -5,13 +5,13 @@ from sqlalchemy.orm import Session
 
 from backend.api.dependencies import get_current_user, get_db
 from backend.schemas.chunk import Chunk
-from backend.schemas.paper import Paper
+from backend.schemas.paper import PaperDetail, PaperList
 from backend.services.paper_service import PaperService
 
 router = APIRouter(prefix="/papers", tags=["papers"])
 
 
-@router.get("/", response_model=List[Paper])
+@router.get("/", response_model=List[PaperList])
 async def get_papers(
     domain_id: Optional[int] = None,
     category_id: Optional[int] = None,
@@ -33,7 +33,7 @@ async def get_papers(
     return papers
 
 
-@router.get("/{paper_id}", response_model=Paper)
+@router.get("/{paper_id}", response_model=PaperDetail)
 async def get_paper(
     paper_id: int,
     session: Session = Depends(get_db),

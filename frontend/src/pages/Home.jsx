@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { statsService } from "../services/statsService";
 import { authService } from "../services/authService";
+import SearchPapers from "../components/SearchPapers";
 
 export default function Home() {
   const { data, isLoading, error } = useQuery({
@@ -38,6 +39,8 @@ export default function Home() {
         <Metric label="🏷️ Domains" value={data.total_domains} />
         <Metric label="📂 Categories" value={data.total_categories} />
       </div>
+
+      <SearchPapers />
     </div>
   );
 }

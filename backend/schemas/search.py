@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from backend.schemas.paper import Paper
+from backend.schemas.paper import PaperDetail
 
 
 class SearchQuery(BaseModel):
@@ -15,6 +15,6 @@ class SearchQuery(BaseModel):
 
 
 class SearchResult(BaseModel):
-    paper: Paper
+    paper: PaperDetail
     score: float
     # TODO: return relevant chunks as following : chunks: List[str] = []

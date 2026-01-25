@@ -19,6 +19,7 @@ export const paperService = {
   },
 
   getPaperById: async (paperId) => {
+    if (!paperId) return null;
     const response = await api.get(`/papers/${paperId}`);
     return response.data;
   },
