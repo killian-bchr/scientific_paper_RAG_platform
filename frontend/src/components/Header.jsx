@@ -4,11 +4,6 @@ import { authService } from "../services/authService";
 export default function Header({ title }) {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    authService.logout();
-    navigate("/auth/login");
-  };
-
   return (
     <div style={styles.container}>
       {title && <h1 style={styles.title}>{title}</h1>}
