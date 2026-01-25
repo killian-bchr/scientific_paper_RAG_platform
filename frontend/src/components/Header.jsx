@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { authService } from "../services/authService";
 
 export default function Header({ title }) {
   const navigate = useNavigate();
