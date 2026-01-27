@@ -7,10 +7,10 @@ from backend.api.dependencies import get_current_user, get_db
 from backend.schemas.search import SearchQuery, SearchResult
 from backend.services.search_service import SearchService
 
-router = APIRouter()
+router = APIRouter(prefix="/search", tags=["search"])
 
 
-@router.post("/search", response_model=List[SearchResult])
+@router.post("/", response_model=List[SearchResult])
 async def search_papers(
     search_query: SearchQuery,
     session: Session = Depends(get_db),

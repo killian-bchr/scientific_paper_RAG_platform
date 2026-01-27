@@ -8,7 +8,7 @@ from backend.core.exceptions import InvalidPasswordError, UserNotFoundError
 from backend.schemas.auth import CreateUserRequest, TokenResponse
 from backend.services import AuthService
 
-router = APIRouter()
+router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
