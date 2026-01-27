@@ -15,8 +15,20 @@ export default function Login() {
     try {
       await authService.login(username, password);
       window.location.href = "/";
-    } catch {
-      setError("Invalid username or password");
+    } catch (err) {
+      if (err.response) {
+        const { status, data } = err.response;
+
+        if (status === 401) {
+          setError(data?.detail || "Authentication failed");
+        } else if (status === 500) {
+          setError("Server error, please try again later");
+        } else {
+          setError("Unexpected error");
+        }
+      } else {
+        setError("Network error — backend unreachable");
+      }
     } finally {
       setLoading(false);
     }
