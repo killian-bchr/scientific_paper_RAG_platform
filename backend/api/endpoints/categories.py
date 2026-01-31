@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from backend.api.dependencies import get_current_user, get_db
 from backend.schemas.category import Category
-from backend.services.category_service import CategoryService
+from backend.services import CategoryService
 
 router = APIRouter(prefix="/categories", tags=["categories"])
 

@@ -99,3 +99,14 @@ class PaperRepository:
     @staticmethod
     def count_papers(session: Session) -> int:
         return session.query(PaperORM).count()
+
+    @staticmethod
+    def delete_paper(session: Session, paper: PaperORM) -> None:
+        session.delete(paper)
+
+    @staticmethod
+    def delete_paper_by_id(session: Session, paper_id: int) -> None:
+        paper = PaperRepository.fetch_paper_by_id(session, paper_id)
+        if not paper:
+            raise ValueError(f"Paper : {paper_id} not found.")
+        PaperRepository.delete_paper(session, paper)

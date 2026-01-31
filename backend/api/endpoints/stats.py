@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from backend.api.dependencies import get_current_user, get_db
 from backend.schemas.stats import Stats
-from backend.services.stats_service import StatsService
+from backend.services import StatsService
 
 router = APIRouter(prefix="/stats", tags=["stats"])
 

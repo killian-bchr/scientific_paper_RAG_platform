@@ -1,4 +1,5 @@
 import api from "./api";
+import { jwtDecode } from "jwt-decode";
 
 export const authService = {
   login: async (username, password) => {
@@ -25,4 +26,28 @@ export const authService = {
   isAuthenticated: () => {
     return !!localStorage.getItem("token");
   },
+
+  getDecodedToken: () => {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+
+    try {
+      return jwtDecode(token);
+    } catch (e) {
+      console.error("JWT decode error:", e);
+      return null;
+    }
+  },
+
+  getUserId: () => {
+    const decoded = authService.getDecodedToken();
+    return decoded?.id ?? null;
+  },
+
+  getRole: () => {
+    const decoded = authService.getDecodedToken();
+    return decoded?.role ?? null;
+  },
+
+  isAdmin: () => authService.getRole() === "admin",
 };

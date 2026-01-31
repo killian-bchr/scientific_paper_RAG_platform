@@ -13,4 +13,12 @@ class ChunkService:
 
     @staticmethod
     def get_chunk_by_id(session: Session, chunk_id: int) -> ChunkORM:
-        return session.query(ChunkORM).filter(ChunkORM.id == chunk_id).first()
+        return ChunkRepository.fetch_chunk_by_id(session, chunk_id)
+
+    @staticmethod
+    def delete_chunk_by_id(session: Session, chunk_id: int) -> None:
+        return ChunkRepository.delete_chunk_by_id(session, chunk_id)
+
+    @staticmethod
+    def delete_chunks_by_type(session: Session, chunk_type: str) -> None:
+        return ChunkRepository.delete_chunks_by_type(session, chunk_type)

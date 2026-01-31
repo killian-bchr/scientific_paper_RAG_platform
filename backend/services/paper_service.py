@@ -56,3 +56,7 @@ class PaperService:
     @staticmethod
     def get_chunks_by_paper_id(session: Session, paper_id: int) -> List[ChunkORM]:
         return ChunkRepository.fetch_chunks_by_paper_id(session, paper_id)
+
+    @staticmethod
+    def delete_paper_by_id(session: Session, paper_id: int) -> None:
+        return PaperRepository.delete_paper_by_id(session, paper_id)

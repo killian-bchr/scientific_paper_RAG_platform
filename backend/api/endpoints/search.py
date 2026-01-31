@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from backend.api.dependencies import get_current_user, get_db
 from backend.schemas.search import SearchQuery, SearchResult
-from backend.services.search_service import SearchService
+from backend.services import SearchService
 
 router = APIRouter(prefix="/search", tags=["search"])
 

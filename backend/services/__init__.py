@@ -6,3 +6,4 @@ from backend.services.domain_service import DomainService  # noqa: F401, E402
 from backend.services.paper_service import PaperService  # noqa: F401, E402
 from backend.services.search_service import SearchService  # noqa: F401, E402
 from backend.services.stats_service import StatsService  # noqa: F401, E402
+from backend.services.user_service import UserService  # noqa: F401, E402

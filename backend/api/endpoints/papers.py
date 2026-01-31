@@ -1,12 +1,12 @@
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from backend.api.dependencies import get_current_user, get_db
+from backend.api.dependencies import get_admin_user, get_current_user, get_db
 from backend.schemas.chunk import Chunk
 from backend.schemas.paper import PaperDetail, PaperList
-from backend.services.paper_service import PaperService
+from backend.services import PaperService
 
 router = APIRouter(prefix="/papers", tags=["papers"])
 
@@ -59,3 +59,12 @@ async def get_paper_chunks(
         return []
 
     return chunks
+
+
+@router.delete("/{paper_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_paper(
+    paper_id: int,
+    session: Session = Depends(get_db),
+    admin_user=Depends(get_admin_user),
+):
+    PaperService.delete_paper_by_id(session, paper_id)

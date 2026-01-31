@@ -1,11 +1,11 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from backend.api.dependencies import get_current_user, get_db
+from backend.api.dependencies import get_admin_user, get_current_user, get_db
 from backend.schemas.chunk import Chunk
-from backend.services.chunk_service import ChunkService
+from backend.services import ChunkService
 
 router = APIRouter(prefix="/chunks", tags=["chunks"])
 
@@ -35,3 +35,21 @@ async def get_chunk(
         )
 
     return chunk
+
+
+@router.delete("/{chunk_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_by_id(
+    chunk_id: int,
+    session: Session = Depends(get_db),
+    admin_user=Depends(get_admin_user),
+):
+    ChunkService.delete_chunk_by_id(session, chunk_id)
+
+
+@router.delete("/{chunk_type}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_by_type(
+    chunk_type: str,
+    session: Session = Depends(get_db),
+    admin_user=Depends(get_admin_user),
+):
+    ChunkService.delete_chunks_by_type(session, chunk_type)

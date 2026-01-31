@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from backend.api.dependencies import get_current_user, get_db
 from backend.schemas.category import Category
 from backend.schemas.domain import Domain
-from backend.services.domain_service import DomainService
+from backend.services import DomainService
 
 router = APIRouter(prefix="/domains", tags=["domains"])
 

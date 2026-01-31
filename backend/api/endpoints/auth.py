@@ -6,7 +6,7 @@ from starlette import status
 from backend.api.dependencies import get_db
 from backend.core.exceptions import InvalidPasswordError, UserNotFoundError
 from backend.schemas.auth import CreateUserRequest, TokenResponse
-from backend.services import AuthService
+from backend.services import AuthService, UserService
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -17,7 +17,7 @@ async def register(
     session: Session = Depends(get_db),
 ):
     try:
-        AuthService.create_user(
+        UserService.create_user(
             session,
             create_user_request.username,
             create_user_request.password,

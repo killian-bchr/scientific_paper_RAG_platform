@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { authService } from "../services/authService";
+import RegisterModal from "../components/RegisterModal";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,7 +62,20 @@ export default function Login() {
         <button type="submit" disabled={loading}>
           {loading ? "Connection..." : "Login"}
         </button>
+
+        <button
+          type="button"
+          style={styles.registerButton}
+          onClick={() => setIsRegisterOpen(true)}
+        >
+          Register
+        </button>
       </form>
+
+      <RegisterModal
+        isOpen={isRegisterOpen}
+        onClose={() => setIsRegisterOpen(false)}
+      />
     </div>
   );
 }
@@ -81,5 +96,14 @@ const styles = {
   error: {
     color: "red",
     fontSize: 14,
+  },
+  registerButton: {
+    marginTop: 8,
+    padding: "6px 12px",
+    borderRadius: 4,
+    border: "1px solid #007bff",
+    background: "#007bff",
+    color: "white",
+    cursor: "pointer",
   },
 };
