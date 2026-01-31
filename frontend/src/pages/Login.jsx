@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { authService } from "../services/authService";
-import RegisterModal from "../components/RegisterModal";
+import RegisterModal from "../components/RegisterModal/RegisterModal";
 
 export default function Login() {
   const [username, setUsername] = useState("");

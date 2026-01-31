@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { userService } from "../services/userService";
+import { userService } from "../../services/userService";
+import CloseButton from "../CloseButton/CloseButton";
+import SubmitButton from "../SubmitButton/SubmitButton";
+import styles from "./RegisterModal.module.css";
 
 export default function RegisterModal({ isOpen, onClose }) {
   const [username, setUsername] = useState("");
@@ -27,16 +30,13 @@ export default function RegisterModal({ isOpen, onClose }) {
   };
 
   return (
-    <div style={styles.overlay} onClick={onClose}>
-      <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <button style={styles.close} onClick={onClose}>
-          ✖
-        </button>
+    <div className={styles.overlay} onClick={onClose}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <CloseButton className={styles.close} onClick={onClose} />
+
         <h3>Register</h3>
-        <form
-          onSubmit={handleRegister}
-          style={{ display: "flex", flexDirection: "column", gap: 12 }}
-        >
+
+        <form className={styles.form} onSubmit={handleRegister}>
           <input
             type="text"
             placeholder="Username"
@@ -51,40 +51,12 @@ export default function RegisterModal({ isOpen, onClose }) {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit" disabled={loading}>
-            {loading ? "Registering..." : "Register"}
-          </button>
-          {error && <p style={{ color: "red", fontSize: 12 }}>{error}</p>}
+
+          <SubmitButton loading={loading}>Register</SubmitButton>
+
+          {error && <p className={styles.error}>{error}</p>}
         </form>
       </div>
     </div>
   );
 }
-
-const styles = {
-  overlay: {
-    position: "fixed",
-    inset: 0,
-    background: "rgba(0,0,0,0.4)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 1000,
-  },
-  modal: {
-    background: "white",
-    padding: 24,
-    borderRadius: 8,
-    width: 300,
-    position: "relative",
-  },
-  close: {
-    position: "absolute",
-    top: 8,
-    right: 8,
-    border: "none",
-    background: "transparent",
-    fontSize: 18,
-    cursor: "pointer",
-  },
-};

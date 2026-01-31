@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { authorService } from "../services/authorService";
-import Header from "../components/Header";
+import EntityList from "../components/EntityList/EntityList";
 
 export default function Authors() {
   const {
@@ -17,18 +17,10 @@ export default function Authors() {
   if (error) return <p>Error loading authors</p>;
 
   return (
-    <div style={{ padding: 20 }}>
-      <Header title="👤 Authors" />
-
-      <p>
-        Total authors: <strong>{authors.length}</strong>
-      </p>
-
-      <ul>
-        {authors.map((author) => (
-          <li key={author.id}>{author.name}</li>
-        ))}
-      </ul>
-    </div>
+    <EntityList
+      title="👤 Authors"
+      items={authors}
+      renderItem={(a) => <li key={a.id}>{a.name}</li>}
+    />
   );
 }

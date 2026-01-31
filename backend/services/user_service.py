@@ -41,4 +41,4 @@ class UserService:
         if user.role == UserRole.ADMIN.value:
             raise ValueError(f"Impossible to delete admin user {user_id}.")
 
-        UserRepository.delete_user(user)
+        UserRepository.delete_user(session, user)

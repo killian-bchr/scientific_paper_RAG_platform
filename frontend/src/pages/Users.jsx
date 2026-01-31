@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { userService } from "../services/userService";
-import Header from "../components/Header";
+import Header from "../components/Header/Header";
 import { authService } from "../services/authService";
 
 export default function Users() {

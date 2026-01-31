@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { categoryService } from "../services/categoryService";
-import Header from "../components/Header";
+import EntityList from "../components/EntityList/EntityList";
 
 export default function Categories() {
   const {
@@ -21,14 +21,10 @@ export default function Categories() {
   );
 
   return (
-    <div style={{ padding: 20 }}>
-      <Header title="🧩 Categories" />
-
-      <ul>
-        {uniqueCategories.map((c) => (
-          <li key={c.id}>{c.name}</li>
-        ))}
-      </ul>
-    </div>
+    <EntityList
+      title="🧩 Categories"
+      items={uniqueCategories}
+      renderItem={(c) => <li key={c.id}>{c.name}</li>}
+    />
   );
 }

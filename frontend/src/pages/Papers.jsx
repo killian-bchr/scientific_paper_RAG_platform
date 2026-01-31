@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { domainService } from "../services/domainService";
 import { paperService } from "../services/paperService";
 import { authService } from "../services/authService";
-import PaperDetailsModal from "../components/PaperDetailsModal";
+import PaperDetailsModal from "../components/PaperDetailsModal/PaperDetailsModal";
 import PaperFilters from "../components/PaperFilters";
-import Header from "../components/Header";
+import Header from "../components/Header/Header";
 
 export default function Papers() {
   const navigate = useNavigate();

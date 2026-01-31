@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { statsService } from "../services/statsService";
 import { authService } from "../services/authService";
 import SearchPapers from "../components/SearchPapers";
-import Metric from "../components/Metric";
+import Metric from "../components/Metric/Metric";
 
 export default function Home() {
   const { data, isLoading, error } = useQuery({

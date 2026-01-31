@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { searchService } from "../services/searchService";
 import { paperService } from "../services/paperService";
-import PaperDetailsModal from "../components/PaperDetailsModal";
+import PaperDetailsModal from "./PaperDetailsModal/PaperDetailsModal";
 
 export default function SearchPapers() {
   const [query, setQuery] = useState("");

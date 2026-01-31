@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { domainService } from "../services/domainService";
-import Header from "../components/Header";
+import EntityList from "../components/EntityList/EntityList";
 
 export default function Domains() {
   const {
@@ -17,14 +17,10 @@ export default function Domains() {
   if (error) return <p>Error loading domains</p>;
 
   return (
-    <div style={{ padding: 20 }}>
-      <Header title="🌐 Domains" />
-
-      <ul>
-        {domains.map((d) => (
-          <li key={d.id}>{d.name}</li>
-        ))}
-      </ul>
-    </div>
+    <EntityList
+      title="🌐 Domains"
+      items={domains}
+      renderItem={(d) => <li key={d.id}>{d.name}</li>}
+    />
   );
 }
