@@ -3,6 +3,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { searchService } from "../services/searchService";
 import { paperService } from "../services/paperService";
 import PaperDetailsModal from "./PaperDetailsModal/PaperDetailsModal";
+import SearchInput from "./SearchInput/SearchInput";
+import PaperResultsList from "./PaperResultsList/PaperResultsList";
 
 export default function SearchPapers() {
   const [query, setQuery] = useState("");
@@ -34,82 +36,16 @@ export default function SearchPapers() {
     <div style={{ marginTop: 32 }}>
       <h2>🔎 Search papers</h2>
 
-      <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
-        <input
-          type="text"
-          placeholder="Search by keywords, concepts, abstract..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          style={{ flex: 1, padding: 8 }}
-          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-        />
-        <button onClick={handleSearch}>Search</button>
-      </div>
+      <SearchInput
+        value={query}
+        onChange={setQuery}
+        onSearch={handleSearch}
+        placeholder="Search by keywords, concepts, abstract..."
+      />
 
       {isSearching && <p>Searching…</p>}
-      {hasSearched && !isSearching && results.length === 0 && (
-        <p>No results yet.</p>
-      )}
-
-      {hasSearched && (
-        <div style={{ display: "flex", gap: 24 }}>
-          <div style={{ flex: 1 }}>
-            <h3>📄 Results</h3>
-            <ul style={{ listStyle: "none", padding: 0 }}>
-              {results.map((r, index) => (
-                <li
-                  key={r.paper.id}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "8px 0",
-                    borderBottom: "1px solid #eee",
-                  }}
-                >
-                  <button
-                    onClick={() => setSelectedPaperId(r.paper.id)}
-                    style={{
-                      background: "transparent",
-                      border: "none",
-                      cursor: "pointer",
-                      textAlign: "left",
-                      padding: 0,
-                    }}
-                  >
-                    <div>
-                      <strong>
-                        {index + 1}. {r.paper.title}
-                      </strong>
-                      <div style={{ fontSize: 12, color: "#666" }}>
-                        Score: {r.score.toFixed(3)}
-                      </div>
-                    </div>
-                  </button>
-
-                  {r.paper.pdf_url && (
-                    <a
-                      href={r.paper.pdf_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        padding: "4px 10px",
-                        background: "#007bff",
-                        color: "white",
-                        borderRadius: 6,
-                        textDecoration: "none",
-                        fontSize: 12,
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      📄 Open PDF
-                    </a>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+      {hasSearched && !isSearching && (
+        <PaperResultsList results={results} onSelect={setSelectedPaperId} />
       )}
 
       <PaperDetailsModal

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { userService } from "../../services/userService";
 import CloseButton from "../CloseButton/CloseButton";
-import SubmitButton from "../SubmitButton/SubmitButton";
+import Button from "../Button/Button"; // <-- ici
 import styles from "./RegisterModal.module.css";
 
 export default function RegisterModal({ isOpen, onClose }) {
@@ -52,7 +52,9 @@ export default function RegisterModal({ isOpen, onClose }) {
             required
           />
 
-          <SubmitButton loading={loading}>Register</SubmitButton>
+          <Button type="submit" variant="primary" disabled={loading}>
+            {loading ? "Registering..." : "Register"}
+          </Button>
 
           {error && <p className={styles.error}>{error}</p>}
         </form>

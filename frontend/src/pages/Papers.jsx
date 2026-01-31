@@ -7,6 +7,8 @@ import { authService } from "../services/authService";
 import PaperDetailsModal from "../components/PaperDetailsModal/PaperDetailsModal";
 import PaperFilters from "../components/PaperFilters";
 import Header from "../components/Header/Header";
+import PaperResultsList from "../components/PaperResultsList/PaperResultsList";
+import Button from "../components/Button/Button";
 
 export default function Papers() {
   const navigate = useNavigate();
@@ -101,62 +103,34 @@ export default function Papers() {
 
       <div style={{ display: "flex", gap: 20 }}>
         <div style={{ flex: 1 }}>
-          <h3>📄 Papers List</h3>
           {papers.length === 0 && <p>No papers found</p>}
-          <ul>
-            {papers.map((p) => (
-              <li key={p.id}>
-                {p.title}
-
-                <button onClick={() => setSelectedPaperId(p.id)}>
-                  View details
-                </button>
-
-                <button
-                  onClick={() => navigate(`/chunks/${p.id}`)}
-                  style={{ cursor: "pointer" }}
+          <PaperResultsList
+            results={papers.map((p) => ({ paper: p }))}
+            onSelect={setSelectedPaperId}
+            showScore={false}
+            actionsBuilder={(r) =>
+              [
+                <Button
+                  key="chunks"
+                  variant="default"
+                  size="sm"
+                  onClick={() => navigate(`/chunks/${r.paper.id}`)}
                 >
                   View Chunks
-                </button>
-
-                {p.pdf_url && (
-                  <a
-                    href={p.pdf_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      marginLeft: 8,
-                      padding: "4px 8px",
-                      background: "#007bff",
-                      color: "white",
-                      borderRadius: 4,
-                      textDecoration: "none",
-                      cursor: "pointer",
-                    }}
-                  >
-                    📄 Open PDF
-                  </a>
-                )}
-
-                {isAdmin && (
-                  <button
-                    onClick={() => handleDelete(p.id)}
-                    style={{
-                      marginLeft: 8,
-                      background: "#dc3545",
-                      color: "white",
-                      border: "none",
-                      borderRadius: 4,
-                      padding: "4px 8px",
-                      cursor: "pointer",
-                    }}
+                </Button>,
+                isAdmin && (
+                  <Button
+                    key="delete"
+                    variant="danger"
+                    size="sm"
+                    onClick={() => handleDelete(r.paper.id)}
                   >
                     Delete
-                  </button>
-                )}
-              </li>
-            ))}
-          </ul>
+                  </Button>
+                ),
+              ].filter(Boolean)
+            }
+          />
         </div>
       </div>
 

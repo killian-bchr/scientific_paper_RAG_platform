@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { statsService } from "../services/statsService";
 import { authService } from "../services/authService";
 import SearchPapers from "../components/SearchPapers";
-import Metric from "../components/Metric/Metric";
+import MetricsGrid from "../components/MetricsGrid/MetricsGrid";
+import Button from "../components/Button/Button";
 
 export default function Home() {
   const { data, isLoading, error } = useQuery({
@@ -19,6 +20,13 @@ export default function Home() {
   if (isLoading) return <p>Loading home page...</p>;
   if (error) return <p>Error loading stats</p>;
 
+  const metrics = [
+    { label: "📄 Papers", value: data.total_papers, to: "/papers" },
+    { label: "👤 Authors", value: data.total_authors, to: "/authors" },
+    { label: "🏷️ Domains", value: data.total_domains, to: "/domains" },
+    { label: "📂 Categories", value: data.total_categories, to: "/categories" },
+  ];
+
   return (
     <div style={{ padding: 24 }}>
       <div
@@ -29,42 +37,14 @@ export default function Home() {
         }}
       >
         <h1>📚 Paper Database RAG Platform</h1>
-        <button onClick={handleLogout} style={styles.logoutButton}>
+        <Button variant="danger" onClick={handleLogout}>
           Logout
-        </button>
+        </Button>
       </div>
 
-      <div style={styles.grid}>
-        <Metric label="📄 Papers" value={data.total_papers} to="/papers" />
-        <Metric label="👤 Authors" value={data.total_authors} to="/authors" />
-        <Metric label="🏷️ Domains" value={data.total_domains} to="/domains" />
-        <Metric
-          label="📂 Categories"
-          value={data.total_categories}
-          to="/categories"
-        />
-      </div>
+      <MetricsGrid metrics={metrics} />
 
       <SearchPapers />
     </div>
   );
 }
-
-const styles = {
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(4, 1fr)",
-    gap: 16,
-    marginTop: 24,
-  },
-  card: {
-    padding: 20,
-    borderRadius: 8,
-    border: "1px solid #ddd",
-    textAlign: "center",
-  },
-  value: {
-    fontSize: 28,
-    fontWeight: "bold",
-  },
-};
