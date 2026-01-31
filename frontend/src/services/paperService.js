@@ -28,4 +28,9 @@ export const paperService = {
     const response = await api.get(`/papers/${paperId}/chunks`);
     return response.data;
   },
+
+  deletePaper: async (paperId) => {
+    const reponse = await api.delete(`/papers/${paperId}`);
+    return reponse.data;
+  },
 };

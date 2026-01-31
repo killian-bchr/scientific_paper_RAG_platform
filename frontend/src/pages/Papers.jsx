@@ -1,14 +1,17 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { domainService } from "../services/domainService";
 import { paperService } from "../services/paperService";
+import { authService } from "../services/authService";
 import PaperDetailsModal from "../components/PaperDetailsModal";
 import PaperFilters from "../components/PaperFilters";
 import Header from "../components/Header";
 
 export default function Papers() {
   const navigate = useNavigate();
+  const isAdmin = authService.isAdmin();
+  const queryClient = useQueryClient();
 
   const [selectedDomain, setSelectedDomain] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -58,6 +61,19 @@ export default function Papers() {
     setStartYear("");
     setEndYear("");
     setSelectedPaperId(null);
+  };
+
+  const handleDelete = async (paperId) => {
+    if (!window.confirm("Are you sure you want to delete this paper?")) return;
+
+    try {
+      await paperService.deletePaper(paperId);
+      queryClient.invalidateQueries(["papers"]);
+      alert("Paper deleted");
+    } catch (err) {
+      console.error(err);
+      alert("Error deleting paper");
+    }
   };
 
   return (
@@ -120,6 +136,23 @@ export default function Papers() {
                   >
                     📄 Open PDF
                   </a>
+                )}
+
+                {isAdmin && (
+                  <button
+                    onClick={() => handleDelete(p.id)}
+                    style={{
+                      marginLeft: 8,
+                      background: "#dc3545",
+                      color: "white",
+                      border: "none",
+                      borderRadius: 4,
+                      padding: "4px 8px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Delete
+                  </button>
                 )}
               </li>
             ))}
