@@ -1,8 +1,9 @@
 from typing import Dict, List
 
 from arxiv import Result
-from models import Author, Category, Chunk, Domain, Paper
-from paper_engine.paper_processor import PaperProcessor
+
+from backend.domain.paper_engine.paper_processor import PaperProcessor
+from backend.models import Author, Category, Chunk, Domain, Paper
 
 
 class PaperBuilder:

@@ -5,12 +5,12 @@ from sqlalchemy.orm import Session
 
 from backend.api.dependencies import get_current_user, get_db
 from backend.schemas.author import Author
-from backend.services.author_service import AuthorService
+from backend.services import AuthorService
 
-router = APIRouter()
+router = APIRouter(prefix="/authors", tags=["authors"])
 
 
-@router.get("/authors", response_model=List[Author])
+@router.get("/", response_model=List[Author])
 async def get_authors(
     session: Session = Depends(get_db),
     current_user=Depends(get_current_user),
@@ -22,7 +22,7 @@ async def get_authors(
     return authors
 
 
-@router.get("/authors/{author_id}", response_model=Author)
+@router.get("/{author_id}", response_model=Author)
 async def get_author_by_id(
     author_id: int,
     session: Session = Depends(get_db),
