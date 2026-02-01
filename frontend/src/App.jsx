@@ -8,6 +8,7 @@ import Papers from "./pages/Papers";
 import Chunks from "./pages/Chunks";
 import Users from "./pages/Users";
 import AdminRoute from "./components/AdminRoute";
+import AppLayout from "./layouts/AppLayout";
 import { authService } from "./services/authService";
 
 function App() {
@@ -21,75 +22,26 @@ function App() {
 
         {/* Home */}
         <Route
-          path="/"
-          element={isAuthenticated ? <Home /> : <Navigate to="/auth/login" />}
-        />
-
-        {/* Public authenticated pages */}
-        <Route
-          path="/authors"
           element={
-            authService.isAuthenticated() ? (
-              <Authors />
-            ) : (
-              <Navigate to="/auth/login" />
-            )
+            isAuthenticated ? <AppLayout /> : <Navigate to="/auth/login" />
           }
-        />
+        >
+          <Route path="/" element={<Home />} />
+          <Route path="/authors" element={<Authors />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/domains" element={<Domains />} />
+          <Route path="/papers" element={<Papers />} />
+          <Route path="/chunks/:paperId" element={<Chunks />} />
 
-        <Route
-          path="/categories"
-          element={
-            authService.isAuthenticated() ? (
-              <Categories />
-            ) : (
-              <Navigate to="/auth/login" />
-            )
-          }
-        />
-
-        <Route
-          path="/domains"
-          element={
-            authService.isAuthenticated() ? (
-              <Domains />
-            ) : (
-              <Navigate to="/auth/login" />
-            )
-          }
-        />
-
-        <Route
-          path="/papers"
-          element={
-            authService.isAuthenticated() ? (
-              <Papers />
-            ) : (
-              <Navigate to="/auth/login" />
-            )
-          }
-        />
-
-        <Route
-          path="/chunks/:paperId"
-          element={
-            authService.isAuthenticated() ? (
-              <Chunks />
-            ) : (
-              <Navigate to="/auth/login" />
-            )
-          }
-        />
-
-        {/* Admin only */}
-        <Route
-          path="/users"
-          element={
-            <AdminRoute>
-              <Users />
-            </AdminRoute>
-          }
-        />
+          <Route
+            path="/users"
+            element={
+              <AdminRoute>
+                <Users />
+              </AdminRoute>
+            }
+          />
+        </Route>
 
         <Route
           path="*"

@@ -1,4 +1,4 @@
-import CloseButton from "../CloseButton/CloseButton";
+import Button from "../Button/Button";
 import styles from "./PaperDetailsModal.module.css";
 
 export default function PaperDetailsModal({ paper, isLoading, onClose }) {
@@ -7,7 +7,14 @@ export default function PaperDetailsModal({ paper, isLoading, onClose }) {
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <CloseButton className={styles.close} onClick={onClose} />
+        <Button
+          variant="close"
+          onClick={onClose}
+          className={styles.close}
+          aria-label="Close modal"
+        >
+          ✖
+        </Button>
 
         <h3>📌 Paper Details</h3>
 

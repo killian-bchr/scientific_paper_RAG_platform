@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { authService } from "../services/authService";
 import RegisterModal from "../components/RegisterModal/RegisterModal";
+import Button from "../components/Button/Button";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -59,17 +60,17 @@ export default function Login() {
           required
         />
 
-        <button type="submit" disabled={loading}>
+        <Button type="submit" disabled={loading}>
           {loading ? "Connection..." : "Login"}
-        </button>
+        </Button>
 
-        <button
+        <Button
           type="button"
-          style={styles.registerButton}
+          variant="primary"
           onClick={() => setIsRegisterOpen(true)}
         >
           Register
-        </button>
+        </Button>
       </form>
 
       <RegisterModal
@@ -96,14 +97,5 @@ const styles = {
   error: {
     color: "red",
     fontSize: 14,
-  },
-  registerButton: {
-    marginTop: 8,
-    padding: "6px 12px",
-    borderRadius: 4,
-    border: "1px solid #007bff",
-    background: "#007bff",
-    color: "white",
-    cursor: "pointer",
   },
 };

@@ -5,14 +5,14 @@ export default function EntityList({ title, items, renderItem }) {
   const count = items?.length ?? 0;
 
   return (
-    <div className={styles.container}>
+    <section>
       <Header title={title} />
 
       <p className={styles.count}>
         Total: <strong>{count}</strong>
       </p>
 
-      <ul>{items.map(renderItem)}</ul>
-    </div>
+      <ul> {items.map(renderItem)} </ul>
+    </section>
   );
 }

@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { userService } from "../services/userService";
 import Header from "../components/Header/Header";
+import Button from "../components/Button/Button";
 import { authService } from "../services/authService";
 
 export default function Users() {
@@ -66,20 +67,13 @@ export default function Users() {
             </div>
 
             {u.id !== currentUserId && (
-              <button
+              <Button
+                variant="danger"
+                size="sm"
                 onClick={() => handleDelete(u)}
-                style={{
-                  fontSize: 12,
-                  padding: "2px 6px",
-                  borderRadius: 4,
-                  background: "#dc3545",
-                  color: "white",
-                  border: "none",
-                  cursor: "pointer",
-                }}
               >
                 Delete
-              </button>
+              </Button>
             )}
           </li>
         ))}

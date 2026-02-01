@@ -28,16 +28,17 @@ export default function Home() {
   ];
 
   return (
-    <div style={{ padding: 24 }}>
+    <div>
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          gap: "16px",
         }}
       >
         <h1>📚 Paper Database RAG Platform</h1>
-        <Button variant="danger" onClick={handleLogout}>
+        <Button variant="danger" size="lg" onClick={handleLogout}>
           Logout
         </Button>
       </div>

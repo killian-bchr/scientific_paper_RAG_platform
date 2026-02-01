@@ -11,13 +11,16 @@ export default function Header({ title }) {
         {title && <h1 className={styles.title}>{title}</h1>}
       </div>
 
-      <Button
-        variant="default"
-        onClick={() => navigate("/")}
-        aria-label="Go to home"
-      >
-        🏠 Home
-      </Button>
+      <div className={styles.right}>
+        <Button
+          variant="ghost"
+          size="lg"
+          onClick={() => navigate("/")}
+          aria-label="Go to home"
+        >
+          🏠 Home
+        </Button>
+      </div>
     </header>
   );
 }
