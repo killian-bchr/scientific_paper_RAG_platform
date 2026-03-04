@@ -7,7 +7,6 @@ from sqlalchemy.orm import Session
 
 from backend.core.config import Config
 from backend.core.exceptions import InvalidPasswordError, UserNotFoundError
-from backend.database.crud import CRUD
 from backend.database.repositories import UserRepository
 from backend.database.tables.user import UserORM
 
@@ -15,21 +14,6 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 class AuthService:
-    @staticmethod
-    def create_user(session: Session, username: str, password: str) -> UserORM:
-        existing = UserRepository.fetch_user_by_username(session, username)
-        if existing:
-            raise ValueError(f"Username '{username}' is already taken")
-
-        hashed_password = pwd_context.hash(password)
-        user = CRUD.user_to_orm(
-            session,
-            username,
-            hashed_password,
-        )
-
-        return user
-
     @staticmethod
     def authenticate(session: Session, username: str, password: str) -> UserORM:
         user = UserRepository.fetch_user_by_username(session, username)

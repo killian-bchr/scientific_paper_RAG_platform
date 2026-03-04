@@ -3,6 +3,7 @@ from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
+from backend.core.constants import UserRole
 from backend.database.repositories import UserRepository
 from backend.database.session import get_session
 from backend.services import AuthService
@@ -43,6 +44,6 @@ def get_current_user(
 
 
 def get_admin_user(current_user=Depends(get_current_user)):
-    if current_user["role"] != "admin":
+    if current_user["role"] != UserRole.ADMIN.value:
         raise HTTPException(403, "Admin only")
     return current_user

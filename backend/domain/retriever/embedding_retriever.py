@@ -10,6 +10,7 @@ from backend.database.repositories import ChunkRepository
 from backend.database.session import get_session
 from backend.database.tables import PaperORM
 from backend.domain.retriever.base import BaseRetriever
+from backend.models.retrieved_chunks import RetrievedChunk
 
 
 class EmbeddingRetriever(BaseRetriever):
@@ -59,3 +60,35 @@ class EmbeddingRetriever(BaseRetriever):
             paper_id: self.compute_score_by_paper(paper_id, query_vect)
             for paper_id in self.paper_ids
         }
+
+    def retrieve_chunks(
+        self, query: str, top_k: int = 10, threshold: float = 0.6
+    ) -> List[RetrievedChunk]:
+        query_vect = self.encode_query_to_vector(query)
+
+        results = []
+
+        with get_session() as session:
+            for paper_id in self.paper_ids:
+                chunks = ChunkRepository.fetch_chunks_by_paper_id(session, paper_id)
+
+                if not chunks:
+                    continue
+
+                embeddings = np.vstack([c.embedding for c in chunks])
+                scores = cosine_similarity(query_vect, embeddings).flatten()
+
+                for chunk, score in zip(chunks, scores):
+                    if score > threshold:
+                        results.append(
+                            RetrievedChunk(
+                                paper_id=paper_id,
+                                chunk_id=chunk.id,
+                                text=chunk.content,
+                                score=float(score),
+                            )
+                        )
+
+        results.sort(key=lambda x: x.score, reverse=True)
+
+        return results[:top_k]
