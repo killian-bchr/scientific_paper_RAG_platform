@@ -1,0 +1,28 @@
+.container {
+  width: fit-content;
+  margin-top: 16px;
+}
+
+.label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.barBackground {
+  width: 220px;
+  height: 10px;
+  background: #eee;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.scoreText {
+  font-size: 13px;
+  margin-top: 6px;
+}

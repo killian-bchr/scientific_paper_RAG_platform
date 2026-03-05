@@ -1,4 +1,5 @@
 import Button from "../Button/Button";
+import ReliabilityScore from "../ReliabilityScore/ReliabilityScore";
 import styles from "./PaperDetailsModal.module.css";
 
 export default function PaperDetailsModal({ paper, isLoading, onClose }) {
@@ -41,6 +42,8 @@ export default function PaperDetailsModal({ paper, isLoading, onClose }) {
                   )
                 : "—"}
             </p>
+
+            <ReliabilityScore score={paper.reliability_score} />
 
             <h4>Abstract</h4>
             <p>{paper.abstract || "No abstract available"}</p>
