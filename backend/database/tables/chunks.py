@@ -17,4 +17,7 @@ class ChunkORM(Base):
     content = Column(Text)
     embedding = Column(Vector(384))
 
+    previous_chunk_id = Column(Integer, ForeignKey("chunks.id"), nullable=True)
+    next_chunk_id = Column(Integer, ForeignKey("chunks.id"), nullable=True)
+
     paper = relationship("PaperORM", back_populates="chunks")

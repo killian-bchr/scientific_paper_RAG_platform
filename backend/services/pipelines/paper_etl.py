@@ -31,7 +31,6 @@ class PaperETLPipeline(Pipeline):
         chunks = PaperBuilder.build_chunks(raw_chunks)
 
         # Load
-        paper_orm = CRUD.paper_to_orm(self.session, paper, flush=True)
-        CRUD.chunks_to_orm(self.session, chunks, paper_orm)
+        CRUD.load_complete_paper(self.session, paper, chunks)
 
         self.session.commit()

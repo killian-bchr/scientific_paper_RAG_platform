@@ -75,7 +75,7 @@ class EmbeddingRetriever(BaseRetriever):
                 if not chunks:
                     continue
 
-                embeddings = np.vstack([c.embedding for c in chunks])
+                embeddings = self.fetch_embeddings_by_paper_id(paper_id)
                 scores = cosine_similarity(query_vect, embeddings).flatten()
 
                 for chunk, score in zip(chunks, scores):
