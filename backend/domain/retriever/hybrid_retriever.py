@@ -1,6 +1,6 @@
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
-from backend.database.tables import PaperORM
+from backend.database.tables import ChunkORM, PaperORM
 from backend.domain.retriever.base import BaseRetriever
 from backend.domain.retriever.embedding_retriever import EmbeddingRetriever
 from backend.domain.retriever.tfidf_retriever import TfidfRetriever
@@ -29,3 +29,13 @@ class HybridRetriever(BaseRetriever):
             ) * embedding_scores.get(paper_id, 0.0)
 
         return final_scores
+
+    def retrieve_relevant_chunks(
+        self,
+        query: str,
+        top_k: int = 10,
+        threshold: float = 0.6,
+    ) -> List[Tuple[ChunkORM, float]]:
+        return self.embedding_retriever.retrieve_relevant_chunks(
+            query, top_k, threshold
+        )

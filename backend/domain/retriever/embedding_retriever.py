@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 import numpy as np
 from numpy import ndarray
@@ -8,9 +8,8 @@ from backend.core.config import Config
 from backend.core.exceptions import InvalidPaperId, InvalidQuery
 from backend.database.repositories import ChunkRepository
 from backend.database.session import get_session
-from backend.database.tables import PaperORM
+from backend.database.tables import ChunkORM, PaperORM
 from backend.domain.retriever.base import BaseRetriever
-from backend.models.retrieved_chunks import RetrievedChunk
 
 
 class EmbeddingRetriever(BaseRetriever):
@@ -61,9 +60,9 @@ class EmbeddingRetriever(BaseRetriever):
             for paper_id in self.paper_ids
         }
 
-    def retrieve_chunks(
+    def retrieve_relevant_chunks(
         self, query: str, top_k: int = 10, threshold: float = 0.6
-    ) -> List[RetrievedChunk]:
+    ) -> List[Tuple[ChunkORM, float]]:
         query_vect = self.encode_query_to_vector(query)
 
         results = []
@@ -80,14 +79,7 @@ class EmbeddingRetriever(BaseRetriever):
 
                 for chunk, score in zip(chunks, scores):
                     if score > threshold:
-                        results.append(
-                            RetrievedChunk(
-                                paper_id=paper_id,
-                                chunk_id=chunk.id,
-                                text=chunk.content,
-                                score=float(score),
-                            )
-                        )
+                        results.append((chunk, float(score)))
 
         results.sort(key=lambda x: x.score, reverse=True)
 
