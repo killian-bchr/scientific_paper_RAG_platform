@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import date
-from typing import List
+from typing import List, Optional
 
 from backend.models import Author, Category, Domain
 
@@ -15,3 +15,10 @@ class Paper:
     authors: List[Author]
     domains: List[Domain]
     categories: List[Category]
+    doi: Optional[str]
+    journal: Optional[str]
+    publisher: Optional[str]
+    cited_by_count: Optional[int]
+    fwci: Optional[float]
+    citation_normalized_percentile: Optional[float]
+    reliability_score: float

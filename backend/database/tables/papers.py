@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Date, Integer, String, Text
+from sqlalchemy import Column, Date, Float, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from backend.database.base import Base
@@ -18,6 +18,13 @@ class PaperORM(Base):
     pdf_url = Column(String)
     abstract = Column(Text)
     publication_date = Column(Date)
+    doi = Column(String, nullable=True)
+    journal = Column(String, nullable=True)
+    publisher = Column(String, nullable=True)
+    cited_by_count = Column(Integer, nullable=True)
+    fwci = Column(Float, nullable=True)
+    citation_normalized_percentile = Column(Float, nullable=True)
+    reliability_score = Column(Float)
 
     authors = relationship(
         "AuthorORM",

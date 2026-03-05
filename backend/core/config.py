@@ -36,3 +36,4 @@ class Config:
     SECRET_KEY = get_env_variable("SECRET_KEY")
     ALGORITHM = get_env_variable("ALGORITHM")
     ACCESS_TOKEN_EXPIRE_MINUTES = int(get_env_variable("ACCESS_TOKEN_EXPIRE_MINUTES"))
+    OPEN_ALEX_URL = "https://api.openalex.org/works/doi:"

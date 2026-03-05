@@ -31,6 +31,14 @@ class PaperProcessor:
         return paper.published.date()
 
     @staticmethod
+    def extract_journal_ref(paper: Result) -> str:
+        return paper.journal_ref
+
+    @staticmethod
+    def extract_doi(paper: Result) -> str:
+        return paper.doi
+
+    @staticmethod
     def parse_arxiv_categories(
         category_codes: List[str],
     ) -> List[Tuple[Domains, Category]]:

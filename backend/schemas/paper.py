@@ -1,5 +1,5 @@
 from datetime import date
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -15,6 +15,13 @@ class PaperBase(BaseModel):
     pdf_url: str
     abstract: str
     publication_date: date
+    doi: Optional[str]
+    journal: Optional[str]
+    publisher: Optional[str]
+    cited_by_count: Optional[int]
+    fwci: Optional[float]
+    citation_normalized_percentile: Optional[float]
+    reliability_score: float
 
     class Config:
         from_attributes = True

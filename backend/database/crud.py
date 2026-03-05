@@ -172,6 +172,13 @@ class CRUD:
             pdf_url=paper.pdf_url,
             abstract=paper.abstract,
             publication_date=paper.publication_date,
+            doi=paper.doi,
+            journal=paper.journal,
+            publisher=paper.publisher,
+            cited_by_count=paper.cited_by_count,
+            fwci=paper.fwci,
+            citation_normalized_percentile=paper.citation_normalized_percentile,
+            reliability_score=paper.reliability_score,
         )
 
         CRUD.add_object_to_session(session, paper_orm)

@@ -2,7 +2,9 @@ from typing import Dict, List
 
 from arxiv import Result
 
+from backend.domain.paper_engine.metadata_loader import MetadataLoader
 from backend.domain.paper_engine.paper_processor import PaperProcessor
+from backend.domain.paper_engine.reliability_scorer import ReliabilityScorer
 from backend.models import Author, Category, Chunk, Domain, Paper
 
 
@@ -36,8 +38,15 @@ class PaperBuilder:
         authors = PaperProcessor.extract_authors(paper)
         domains = PaperProcessor.extract_domains(paper)
         categories = PaperProcessor.extract_categories(paper)
+        journal = PaperProcessor.extract_journal_ref(paper)
 
-        return Paper(
+        doi = PaperProcessor.extract_doi(paper)
+
+        metadata = None
+        if doi:
+            metadata = MetadataLoader.fetch_paper_metadata(doi)
+
+        paper_built = Paper(
             arxiv_id=PaperProcessor.extract_arxiv_id(paper),
             title=PaperProcessor.extract_title(paper),
             pdf_url=PaperProcessor.extract_pdf_url(paper),
@@ -46,7 +55,22 @@ class PaperBuilder:
             authors=PaperBuilder.build_authors(authors),
             domains=PaperBuilder.build_domains(domains),
             categories=PaperBuilder.build_categories(categories, domains),
+            doi=doi,
+            journal=metadata.journal if metadata else journal,
+            publisher=metadata.publisher if metadata else None,
+            cited_by_count=metadata.cited_by_count if metadata else None,
+            fwci=metadata.fwci if metadata else None,
+            citation_normalized_percentile=(
+                metadata.citation_normalized_percentile if metadata else None
+            ),
+            reliability_score=0.0,
         )
+
+        score = ReliabilityScorer.compute_reliability_score(paper_built)
+
+        paper_built.reliability_score = score
+
+        return paper_built
 
     @staticmethod
     def build_papers(papers: List[Result]) -> List[Paper]:
