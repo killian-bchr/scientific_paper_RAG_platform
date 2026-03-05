@@ -1,4 +1,5 @@
 import logging
+import re
 from datetime import date
 from typing import Dict, List, Optional, Tuple
 
@@ -84,14 +85,20 @@ class PaperProcessor:
         return [a.name for a in paper.authors]
 
     @staticmethod
+    def normalize_arxiv_id(arxiv_id: str) -> str:
+        arxiv_id = re.sub(r"v\d+$", "", arxiv_id)
+        arxiv_id = arxiv_id.replace("/", "_")
+        return arxiv_id
+
+    @staticmethod
     def extract_arxiv_id(paper: Result) -> str:
-        return paper.get_short_id().split("v")[0]
+        return PaperProcessor.normalize_arxiv_id(paper.get_short_id())
 
     @staticmethod
     def download_paper(paper: Result, filename: Optional[str] = None) -> None:
         if filename is None:
-            paper_id = paper.get_short_id().split("v")[0]
-            filename = f"{paper_id.replace('/', '_')}.pdf"
+            paper_id = PaperProcessor.extract_arxiv_id(paper)
+            filename = f"{paper_id}.pdf"
         elif not filename.endswith(".pdf"):
             filename += ".pdf"
 
