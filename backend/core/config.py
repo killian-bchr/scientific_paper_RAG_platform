@@ -36,3 +36,10 @@ class Config:
     SECRET_KEY = get_env_variable("SECRET_KEY")
     ALGORITHM = get_env_variable("ALGORITHM")
     ACCESS_TOKEN_EXPIRE_MINUTES = int(get_env_variable("ACCESS_TOKEN_EXPIRE_MINUTES"))
+    OPEN_ALEX_URL = "https://api.openalex.org/works/doi:"
+    HF_HUB_DISABLE_SYMLINKS_WARNING = get_env_variable(
+        "HF_HUB_DISABLE_SYMLINKS_WARNING"
+    )
+    HF_HOME = get_env_variable("HF_HOME")
+    TRANSFORMERS_CACHE = get_env_variable("TRANSFORMERS_CACHE")
+    HF_HUB_ENABLE_HF_TRANSFER = get_env_variable("HF_HUB_ENABLE_HF_TRANSFER")

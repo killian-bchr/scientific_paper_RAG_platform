@@ -1,0 +1,25 @@
+.contextContainer {
+  margin-top: 10px;
+}
+
+.windowControl {
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+.context {
+  padding-left: 5px;
+  border-left: 3px solid #eee;
+  background-color: #fafafa;
+}
+
+.context div {
+  margin: 2px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.centerChunk {
+  font-weight: bold;
+  color: #000;
+}

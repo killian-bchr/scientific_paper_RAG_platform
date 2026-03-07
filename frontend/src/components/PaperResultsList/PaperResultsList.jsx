@@ -8,13 +8,16 @@ export default function PaperResultsList({
 }) {
   if (!results || results.length === 0) return <p>No results yet.</p>;
 
+  const sortedResults = [...results].sort((a, b) => b.score - a.score);
+
   return (
     <ul style={{ listStyle: "none", padding: 0 }}>
-      {results.map((r) => (
+      {sortedResults.map((r) => (
         <PaperResultItem
           key={r.paper.id}
           paper={r.paper}
           score={showScore ? r.score : undefined}
+          chunks={r.chunks}
           onSelect={onSelect}
           actions={actionsBuilder ? actionsBuilder(r) : []}
         />

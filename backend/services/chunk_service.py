@@ -16,6 +16,14 @@ class ChunkService:
         return ChunkRepository.fetch_chunk_by_id(session, chunk_id)
 
     @staticmethod
+    def get_chunk_context(
+        session: Session,
+        chunk_id: int,
+        window: int = 2,
+    ) -> List[ChunkORM]:
+        return ChunkRepository.get_window_chunks(session, chunk_id, window)
+
+    @staticmethod
     def delete_chunk_by_id(session: Session, chunk_id: int) -> None:
         return ChunkRepository.delete_chunk_by_id(session, chunk_id)
 

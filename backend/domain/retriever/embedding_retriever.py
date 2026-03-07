@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import List
 
 import numpy as np
 from numpy import ndarray
@@ -8,9 +8,9 @@ from backend.core.config import Config
 from backend.core.exceptions import InvalidPaperId, InvalidQuery
 from backend.database.repositories import ChunkRepository
 from backend.database.session import get_session
-from backend.database.tables import PaperORM
+from backend.database.tables import ChunkORM, PaperORM
 from backend.domain.retriever.base import BaseRetriever
-from backend.models.retrieved_chunks import RetrievedChunk
+from backend.models import ChunkRanked
 
 
 class EmbeddingRetriever(BaseRetriever):
@@ -28,67 +28,40 @@ class EmbeddingRetriever(BaseRetriever):
 
         return self.model.encode(query, normalize_embeddings=True).reshape(1, -1)
 
-    def fetch_embeddings_by_paper_id(self, paper_id: int) -> List[ndarray]:
-        if paper_id not in self.paper_ids:
-            raise InvalidPaperId(f"Paper: {paper_id} doesn't match any paper selected")
-
-        with get_session() as session:
-            chunks = ChunkRepository.fetch_chunks_by_paper_id(session, paper_id)
+    def fetch_embeddings_by_paper_ids(
+        self,
+        paper_ids: List[int],
+        chunks: List[ChunkORM],
+    ) -> List[ndarray]:
+        for p_id in paper_ids:
+            if p_id not in self.paper_ids:
+                raise InvalidPaperId(f"Paper: {p_id} doesn't match any paper selected")
 
         if not chunks or len(chunks) == 0:
             return np.empty((0, self.model.get_sentence_embedding_dimension()))
 
         return np.vstack([c.embedding for c in chunks])
 
-    def compute_score_by_paper(
+    def retrieve(
         self,
-        paper_id: int,
-        query_vect: ndarray,
-    ) -> float:
-        embeddings = self.fetch_embeddings_by_paper_id(paper_id)
+        query: str,
+        threshold: float = 0.5,
+    ) -> List[ChunkRanked]:
 
-        if embeddings.shape[0] == 0:
-            return 0.0
+        query_vect = self.encode_query_to_vector(query)
+
+        with get_session() as session:
+            chunks = ChunkRepository.fetch_chunks_by_paper_ids(session, self.paper_ids)
+
+        embeddings = self.fetch_embeddings_by_paper_ids(self.paper_ids, chunks)
 
         scores = cosine_similarity(query_vect, embeddings).flatten()
-        return scores.max()
-
-    def compute_scores(self, query: str) -> Dict[int, float]:
-        query_vect = self.encode_query_to_vector(query)
-
-        return {
-            paper_id: self.compute_score_by_paper(paper_id, query_vect)
-            for paper_id in self.paper_ids
-        }
-
-    def retrieve_chunks(
-        self, query: str, top_k: int = 10, threshold: float = 0.6
-    ) -> List[RetrievedChunk]:
-        query_vect = self.encode_query_to_vector(query)
 
         results = []
 
-        with get_session() as session:
-            for paper_id in self.paper_ids:
-                chunks = ChunkRepository.fetch_chunks_by_paper_id(session, paper_id)
+        for chunk, score in zip(chunks, scores):
+            if score >= threshold:
+                chunk_ranked = ChunkRanked(chunk=chunk, score=float(score))
+                results.append(chunk_ranked)
 
-                if not chunks:
-                    continue
-
-                embeddings = np.vstack([c.embedding for c in chunks])
-                scores = cosine_similarity(query_vect, embeddings).flatten()
-
-                for chunk, score in zip(chunks, scores):
-                    if score > threshold:
-                        results.append(
-                            RetrievedChunk(
-                                paper_id=paper_id,
-                                chunk_id=chunk.id,
-                                text=chunk.content,
-                                score=float(score),
-                            )
-                        )
-
-        results.sort(key=lambda x: x.score, reverse=True)
-
-        return results[:top_k]
+        return results

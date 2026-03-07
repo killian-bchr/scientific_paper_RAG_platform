@@ -28,6 +28,18 @@ class ChunkRepository:
         )
 
     @staticmethod
+    def fetch_chunks_by_paper_ids(
+        session: Session,
+        paper_ids: List[int],
+    ) -> List[ChunkORM]:
+        return (
+            session.query(ChunkORM)
+            .filter(ChunkORM.paper_id.in_(paper_ids))
+            .order_by(ChunkORM.page_no, ChunkORM.id)
+            .all()
+        )
+
+    @staticmethod
     def count_chunks(session: Session) -> int:
         return session.query(ChunkORM).count()
 
@@ -54,34 +66,55 @@ class ChunkRepository:
 
     @staticmethod
     def get_window_chunks(
-        session: Session, center_chunk_id: int, window=2
+        session: Session,
+        center_chunk_id: int,
+        window: int = 2,
     ) -> List[ChunkORM]:
+
         result = []
         visited = set()
 
-        def traverse_left(chunk_id, n):
-            if n == 0 or chunk_id is None or chunk_id in visited:
-                return
-            visited.add(chunk_id)
-            chunk = chunk_dict[chunk_id]
-            result.append(chunk)
-            traverse_left(chunk.left_chunk_id, n - 1)
+        center_chunk = ChunkRepository.fetch_chunk_by_id(session, center_chunk_id)
+        if center_chunk is None:
+            return []
 
-        def traverse_right(chunk_id, n):
-            if n == 0 or chunk_id is None or chunk_id in visited:
-                return
-            visited.add(chunk_id)
-            chunk = chunk_dict[chunk_id]
-            result.append(chunk)
-            traverse_right(chunk.right_chunk_id, n - 1)
-
-        center_chunk = chunk_dict[center_chunk_id]
         result.append(center_chunk)
-        visited.add(center_chunk_id)
+        visited.add(center_chunk.id)
 
-        traverse_left(center_chunk.left_chunk_id, window)
-        traverse_right(center_chunk.right_chunk_id, window)
+        # LEFT
+        current = center_chunk
+        for _ in range(window):
+            if current.previous_chunk_id is None:
+                break
 
-        result.sort(key=lambda c: (c.page_no, c.left_chunk_id or -1))
+            prev_chunk = ChunkRepository.fetch_chunk_by_id(
+                session,
+                current.previous_chunk_id,
+            )
+            if prev_chunk is None or prev_chunk.id in visited:
+                break
+
+            result.append(prev_chunk)
+            visited.add(prev_chunk.id)
+            current = prev_chunk
+
+        # RIGHT
+        current = center_chunk
+        for _ in range(window):
+            if current.next_chunk_id is None:
+                break
+
+            next_chunk = ChunkRepository.fetch_chunk_by_id(
+                session,
+                current.next_chunk_id,
+            )
+            if next_chunk is None or next_chunk.id in visited:
+                break
+
+            result.append(next_chunk)
+            visited.add(next_chunk.id)
+            current = next_chunk
+
+        result.sort(key=lambda c: c.id)
 
         return result

@@ -1,10 +1,10 @@
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
-from backend.database.repositories.paper_repository import PaperRepository
-from backend.database.tables import PaperORM
+from backend.database.repositories import PaperRepository
 from backend.domain.retriever import HybridRetriever
+from backend.models import PaperRanked
 
 
 class SearchService:
@@ -13,12 +13,19 @@ class SearchService:
         session: Session,
         query: str,
         paper_ids: Optional[List[int]] = None,
-        k: int = 10,
-    ) -> List[Tuple[PaperORM, float]]:
+        top_k_papers: int = 10,
+        top_k_chunks: int = 10,
+        chunk_relevance_threshold: float = 0.5,
+    ) -> List[PaperRanked]:
         papers = PaperRepository.fetch_papers_by_ids(session, paper_ids)
         if not papers:
             return []
 
         retriever = HybridRetriever(papers)
 
-        return retriever.retrieve_top_papers_with_scores(query, k)
+        return retriever.retrieve(
+            query,
+            top_k_papers,
+            top_k_chunks,
+            chunk_relevance_threshold,
+        )

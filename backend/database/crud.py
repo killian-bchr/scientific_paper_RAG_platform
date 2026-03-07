@@ -172,6 +172,13 @@ class CRUD:
             pdf_url=paper.pdf_url,
             abstract=paper.abstract,
             publication_date=paper.publication_date,
+            doi=paper.doi,
+            journal=paper.journal,
+            publisher=paper.publisher,
+            cited_by_count=paper.cited_by_count,
+            fwci=paper.fwci,
+            citation_normalized_percentile=paper.citation_normalized_percentile,
+            reliability_score=paper.reliability_score,
         )
 
         CRUD.add_object_to_session(session, paper_orm)
@@ -208,20 +215,34 @@ class CRUD:
         return chunk_orm
 
     @staticmethod
+    def link_chunks(chunks_orm: List[ChunkORM]) -> None:
+        if len(chunks_orm) < 2:
+            return
+
+        for i, chunk in enumerate(chunks_orm):
+
+            if i > 0:
+                chunk.previous_chunk_id = chunks_orm[i - 1].id
+
+            if i < len(chunks_orm) - 1:
+                chunk.next_chunk_id = chunks_orm[i + 1].id
+
+    @staticmethod
     def chunks_to_orm(
         session: Session,
         chunks: List[Chunk],
         paper_orm: PaperORM,
-        flush: bool = False,
     ) -> List[ChunkORM]:
         chunks_orm = [CRUD.chunk_to_orm(session, c, paper_orm) for c in chunks]
 
-        if flush:
-            CRUD.flush_session(session)
+        CRUD.flush_session(session)
+        CRUD.link_chunks(chunks_orm)
 
         return chunks_orm
 
     @staticmethod
-    def save_complete_paper(session: Session, paper: Paper, flush: bool = True) -> None:
-        # TODO: write a function to save a paper completely (with its chunks)
-        pass
+    def load_complete_paper(
+        session: Session, paper: Paper, chunks: List[Chunk]
+    ) -> None:
+        paper_orm = CRUD.paper_to_orm(session, paper, flush=True)
+        CRUD.chunks_to_orm(session, chunks, paper_orm)

@@ -1,0 +1,21 @@
+.container {
+  margin-top: 10px;
+}
+
+.toggle {
+  background: none;
+  border: none;
+  color: #4a6cf7;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.dropdown {
+  margin-top: 10px;
+  padding-left: 10px;
+  border-left: 2px solid #eee;
+}
+
+.dropdownButton {
+  width: 100%;
+}

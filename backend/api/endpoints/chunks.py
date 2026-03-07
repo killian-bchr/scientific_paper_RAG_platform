@@ -37,6 +37,20 @@ async def get_chunk(
     return chunk
 
 
+@router.get("/{chunk_id}/context", response_model=List[Chunk])
+async def get_chunk_context(
+    chunk_id: int,
+    window: int = 2,
+    session: Session = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    chunks = ChunkService.get_chunk_context(session, chunk_id, window)
+    if not chunks:
+        return []
+
+    return chunks
+
+
 @router.delete("/{chunk_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_by_id(
     chunk_id: int,

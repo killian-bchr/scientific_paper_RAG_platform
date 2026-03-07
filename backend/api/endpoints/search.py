@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from backend.api.dependencies import get_current_user, get_db
-from backend.schemas.search import SearchQuery, SearchResult
+from backend.schemas.search import ChunkResult, SearchQuery, SearchResult
 from backend.services import SearchService
 
 router = APIRouter(prefix="/search", tags=["search"])
@@ -17,16 +17,29 @@ async def search_papers(
     current_user=Depends(get_current_user),
 ):
     try:
-        raw_results = SearchService.search_papers(
+        results = SearchService.search_papers(
             session,
             search_query.query,
-            k=search_query.limit,
+            top_k_papers=search_query.top_k_papers,
+            top_k_chunks=search_query.top_k_chunks,
+            chunk_relevance_threshold=search_query.chunk_relevance_threshold,
         )
 
-        search_results = [
-            SearchResult(paper=paper, score=float(score))
-            for paper, score in raw_results
-        ]
+        search_results = []
+        for paper_ranked in results:
+            chunks = []
+            if paper_ranked.chunks:
+                chunks = [
+                    ChunkResult(chunk=c.chunk, score=c.score)
+                    for c in paper_ranked.chunks
+                ]
+
+            search_result = SearchResult(
+                paper=paper_ranked.paper,
+                score=paper_ranked.score,
+                chunks=chunks,
+            )
+            search_results.append(search_result)
 
         return search_results
 
