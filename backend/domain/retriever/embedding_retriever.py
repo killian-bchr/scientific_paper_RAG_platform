@@ -42,7 +42,7 @@ class EmbeddingRetriever(BaseRetriever):
 
         return np.vstack([c.embedding for c in chunks])
 
-    def retrieve_relevant_chunks(
+    def retrieve(
         self,
         query: str,
         threshold: float = 0.5,

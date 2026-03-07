@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 from typing import List
 
 from backend.database.tables import PaperORM
-from backend.models import PaperRanked
 
 
 class BaseRetriever(ABC):
@@ -13,5 +12,5 @@ class BaseRetriever(ABC):
         self.is_empty = len(papers) == 0
 
     @abstractmethod
-    def retrieve(self) -> List[PaperRanked]:
+    def retrieve(self):
         pass

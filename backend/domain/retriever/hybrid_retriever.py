@@ -85,8 +85,8 @@ class HybridRetriever(BaseRetriever):
         top_k_chunks: int = 5,
         chunk_relevance_threshold: float = 0.5,
     ) -> List[PaperRanked]:
-        papers = self.tfidf_retriever.retrieve_relevant_papers(query)
-        chunks = self.embedding_retriever.retrieve_relevant_chunks(
+        papers = self.tfidf_retriever.retrieve(query)
+        chunks = self.embedding_retriever.retrieve(
             query,
             chunk_relevance_threshold,
         )
