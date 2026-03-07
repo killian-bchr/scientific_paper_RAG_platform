@@ -65,7 +65,7 @@ class TfidfRetriever(BaseRetriever):
             self.abstract_matrix,
         ).flatten()
 
-    def compute_scores(self, query: str) -> Dict[int, float]:
+    def retrieve_relevant_papers(self, query: str) -> Dict[int, float]:
         query_title, query_abstract = self.encode_query_to_vector(query)
 
         title_scores = self.compute_title_score(query_title)

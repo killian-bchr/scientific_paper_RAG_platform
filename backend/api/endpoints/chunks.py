@@ -37,7 +37,7 @@ async def get_chunk(
     return chunk
 
 
-@router.get("/{chunk_id}/context", response=List[Chunk])
+@router.get("/{chunk_id}/context", response_model=List[Chunk])
 async def get_chunk_context(
     chunk_id: int,
     window: int = 2,
