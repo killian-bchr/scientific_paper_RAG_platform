@@ -19,7 +19,11 @@ async def search_papers(
     try:
         results = SearchService.search_papers(
             session,
-            search_query.query,
+            query=search_query.query,
+            domain_id=search_query.domain_id,
+            category_id=search_query.category_id,
+            start_year=search_query.start_year,
+            end_year=search_query.end_year,
             top_k_papers=search_query.top_k_papers,
             top_k_chunks=search_query.top_k_chunks,
             chunk_relevance_threshold=search_query.chunk_relevance_threshold,

@@ -1,10 +1,8 @@
 import api from "./api";
 
 export const searchService = {
-  searchPapers: async (query) => {
-    const { data } = await api.post("/search", {
-      query,
-    });
+  searchPapers: async (params) => {
+    const { data } = await api.post("/search", params);
     return data;
   },
 };
