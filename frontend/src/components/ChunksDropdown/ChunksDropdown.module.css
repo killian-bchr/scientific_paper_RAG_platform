@@ -1,21 +1,29 @@
 .container {
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .toggle {
   background: none;
   border: none;
-  color: #4a6cf7;
+  color: #6b7280;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
+  padding: 4px 0;
+  border-bottom: 1px dashed transparent;
+  transition: all 0.2s;
+}
+
+.toggle:hover {
+  color: #374151;
+  border-bottom-color: #d1d5db;
 }
 
 .dropdown {
-  margin-top: 10px;
-  padding-left: 10px;
-  border-left: 2px solid #eee;
+  margin-top: 16px;
 }
 
-.dropdownButton {
-  width: 100%;
+.dropdown > *:not(:last-child) {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f3f4f6;
 }
