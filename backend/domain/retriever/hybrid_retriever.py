@@ -50,7 +50,10 @@ class HybridRetriever(BaseRetriever):
             result[p_id] = self.alpha * score
 
         for p_id, chunks in paper_chunks.items():
-            result[p_id] += (1 - self.alpha) * float(np.mean([c.score for c in chunks]))
+            embedding_score = float(np.mean([c.score for c in chunks]))
+            result[p_id] = result.get(p_id, 0) + (1 - self.alpha) * embedding_score
+
+        result = {p_id: score for p_id, score in result.items() if score > 0}
 
         return result
 
@@ -59,7 +62,7 @@ class HybridRetriever(BaseRetriever):
         paper_scores: Dict[int, float],
         top_k: int,
     ) -> Dict[int, float]:
-        papers_sorted = sorted(paper_scores.items(), key=lambda x: x[1], reverse=False)[
+        papers_sorted = sorted(paper_scores.items(), key=lambda x: x[1], reverse=True)[
             :top_k
         ]
 

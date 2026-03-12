@@ -7,9 +7,12 @@ export default function ChunkItem({ chunk, score }) {
 
   return (
     <div className={styles.chunk}>
-      {chunk.chunk_type && (
-        <div className={styles.chunkType}>{chunk.chunk_type}</div>
-      )}
+      <div className={styles.meta}>
+        {chunk.chunk_type && (
+          <span className={styles.chunkType}>{chunk.chunk_type}</span>
+        )}
+        {chunk.page_no && <span>Page {chunk.page_no}</span>}
+      </div>
 
       {score !== undefined && (
         <div className={styles.score}>Score: {score.toFixed(3)}</div>

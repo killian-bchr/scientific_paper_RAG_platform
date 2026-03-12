@@ -17,15 +17,6 @@
   margin-bottom: 0;
 }
 
-.chunkType {
-  font-size: 12px;
-  font-weight: 500;
-  color: #111827;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  margin-bottom: 4px;
-}
-
 .score {
   font-size: 12px;
   font-weight: 500;
@@ -124,4 +115,28 @@
   background: #f3f4f6;
   border-color: #d1d5db;
   color: #111827;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: black;
+  margin-bottom: 4px;
+}
+
+.meta span {
+  display: flex;
+  align-items: center;
+}
+
+.meta span:not(:last-child)::after {
+  content: "•";
+  margin-left: 6px;
+  color: black;
+}
+
+.chunkType {
+  text-transform: uppercase;
 }
