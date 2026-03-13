@@ -39,10 +39,23 @@ export default function SearchPapers() {
   const {
     mutate,
     data: results = [],
-    isLoading: isSearching,
+    isPending: isSearching,
+    isError,
+    error,
   } = useMutation({
     mutationFn: searchService.searchPapers,
-    onSuccess: () => setSelectedPaperId(null),
+    onSuccess: (data) => {
+      console.log("✅ Résultats reçus :", data);
+      console.log("📦 Nombre de résultats :", data?.length);
+      setSelectedPaperId(null);
+    },
+    onError: (err) => {
+      console.error("❌ Erreur API :", err);
+      console.error("📄 Détail :", err?.message, err?.response);
+    },
+    onMutate: (variables) => {
+      console.log("🚀 Requête envoyée avec :", variables);
+    },
   });
 
   const { data: paperDetail, isLoading: isLoadingPaper } = useQuery({
@@ -104,16 +117,53 @@ export default function SearchPapers() {
         placeholder="Search by keywords, concepts, abstract..."
       />
 
-      {isSearching && <p>Searching…</p>}
-      {hasSearched && !isSearching && (
-        <PaperResultsList results={results} onSelect={setSelectedPaperId} />
+      {isSearching && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            marginTop: 16,
+          }}
+        >
+          <span
+            style={{
+              display: "inline-block",
+              width: 18,
+              height: 18,
+              border: "3px solid #e0e0e0",
+              borderTopColor: "#1a73e8",
+              borderRadius: "50%",
+              animation: "spin 0.7s linear infinite",
+            }}
+          />
+          <p style={{ margin: 0 }}>Searching…</p>
+        </div>
       )}
+
+      {hasSearched &&
+        !isSearching &&
+        (isError ? (
+          <p style={{ color: "#e53935", marginTop: 16 }}>
+            {error?.message?.includes("timeout")
+              ? "⏱️ The search took too long. Try adding filters to narrow down the results."
+              : `❌ An error occurred : ${error?.message}`}
+          </p>
+        ) : (
+          <PaperResultsList results={results} onSelect={setSelectedPaperId} />
+        ))}
 
       <PaperDetailsModal
         paper={paperDetail}
         isLoading={isLoadingPaper}
         onClose={() => setSelectedPaperId(null)}
       />
+
+      <style>{`
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 }
