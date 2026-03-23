@@ -30,6 +30,16 @@ export default function PaperDetailsModal({ paper, isLoading, onClose }) {
               <strong>Authors:</strong>{" "}
               {paper.authors?.map((a) => a.name).join(", ") || "—"}
             </p>
+            {paper.publication_date && (
+              <p>
+                <strong>Published:</strong> {paper.publication_date}
+              </p>
+            )}
+            {paper.journal && (
+              <p>
+                <strong>Journal:</strong> {paper.journal}
+              </p>
+            )}
             <p>
               <strong>Domains:</strong>{" "}
               {paper.domains?.map((d) => d.name).join(", ") || "—"}

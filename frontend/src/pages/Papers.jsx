@@ -5,7 +5,7 @@ import { domainService } from "../services/domainService";
 import { paperService } from "../services/paperService";
 import { authService } from "../services/authService";
 import PaperDetailsModal from "../components/PaperDetailsModal/PaperDetailsModal";
-import PaperFilters from "../components/PaperFilters";
+import PaperFilters from "../components/PaperFilters/PaperFilters";
 import Header from "../components/Header/Header";
 import PaperResultsList from "../components/PaperResultsList/PaperResultsList";
 import Button from "../components/Button/Button";

@@ -6,7 +6,13 @@ export default function PaperResultsList({
   actionsBuilder,
   showScore = true,
 }) {
-  if (!results || results.length === 0) return <p>No results yet.</p>;
+  if (!results || results.length === 0) {
+    return (
+      <p style={{ marginTop: 16, color: "#666" }}>
+        No results found for your search.
+      </p>
+    );
+  }
 
   const sortedResults = [...results].sort((a, b) => b.score - a.score);
 

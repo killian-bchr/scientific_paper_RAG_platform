@@ -1,31 +1,13 @@
-from datetime import date
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
+from backend.core.date_utils import DateUtils
 from backend.database.repositories import ChunkRepository, PaperRepository
 from backend.database.tables import ChunkORM, PaperORM
 
 
 class PaperService:
-    @staticmethod
-    def compute_start_and_end_date(
-        start_year: Optional[int] = None,
-        end_year: Optional[int] = None,
-    ) -> Tuple[date, date]:
-        start_date, end_date = None, None
-
-        if start_year:
-            start_date = date(start_year, 1, 1)
-
-        if end_year:
-            end_date = date(end_year, 12, 31)
-
-        if start_date and end_date and start_date > end_date:
-            raise ValueError("Start year must be before end year")
-
-        return start_date, end_date
-
     @staticmethod
     def get_filtered_papers(
         session: Session,
@@ -34,7 +16,7 @@ class PaperService:
         start_year: Optional[int] = None,
         end_year: Optional[int] = None,
     ):
-        start_date, end_date = PaperService.compute_start_and_end_date(
+        start_date, end_date = DateUtils.compute_start_and_end_date(
             start_year, end_year
         )
         return PaperRepository.fetch_filtered_papers(

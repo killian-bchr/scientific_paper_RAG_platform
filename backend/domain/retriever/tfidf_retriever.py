@@ -71,7 +71,7 @@ class TfidfRetriever(BaseRetriever):
         title_scores = self.compute_title_score(query_title)
         abstract_scores = self.compute_abstract_score(query_abstract)
 
-        final_scores = title_scores + 0.8 * abstract_scores
+        final_scores = (title_scores + 0.8 * abstract_scores) / 1.8
 
         return {
             paper_id: score for paper_id, score in zip(self.paper_ids, final_scores)

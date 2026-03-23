@@ -1,25 +1,42 @@
 .contextContainer {
-  margin-top: 10px;
+  width: 100%;
 }
 
 .windowControl {
-  margin-bottom: 6px;
-  font-size: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid black;
+}
+
+.windowControl label {
+  font-size: 13px;
+  color: black;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.windowControl input {
+  width: 60px;
+  padding: 4px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 13px;
 }
 
 .context {
-  padding-left: 5px;
-  border-left: 3px solid #eee;
-  background-color: #fafafa;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.context div {
-  margin: 2px 0;
+.context > div {
   font-size: 14px;
-  color: #333;
+  line-height: 1.6;
+  color: #4b5563;
 }
 
 .centerChunk {
-  font-weight: bold;
-  color: #000;
+  font-weight: 700;
+  color: #111827;
 }
